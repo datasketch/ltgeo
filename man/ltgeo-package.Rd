@@ -4,12 +4,12 @@
 \name{ltgeo-package}
 \alias{ltgeo}
 \alias{ltgeo-package}
-\title{ltgeo: What the Package Does (One Line, Title Case)}
+\title{ltgeo: Leaflet Wrapper To Make Interactive Maps}
 \description{
-What the package does (one paragraph).
+Make interactive maps with leaflet with a simplified interface.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Jp Marin Diaz \email{jpmarindiaz@gmail.com}
 
 }
 \keyword{internal}

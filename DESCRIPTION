@@ -19,4 +19,5 @@ Imports:
     dstools,
     sf,
     htmltools,
+    dsdataprep,
     dplyr (>= 1.0.99)

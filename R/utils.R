@@ -8,3 +8,10 @@ getfun <- function(x) {
   }
 }
 
+tmp_fun <- function(){
+  cars |>
+    mutate(..val = speed)
+
+}
+
+

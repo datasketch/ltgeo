@@ -47,6 +47,14 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
                                                palette = palette,
                                                na.color = opts$theme$na_color)
 
+  # Calculate tooltip
+  vars <- names(data)[!grepl("^\\.\\.|geometry", names(data))]
+  tooltip <- opts$chart$tooltip %||% NULL
+  dd <- sf::st_drop_geometry(dgeo) |>
+    select(name, any_of(vars))
+  dgeo$..labels <- dsdataprep::prep_tooltip(data = dd, tooltip = tooltip,
+                                   na_row_default_column = "name")
+
   # Filter regions
   if(!is.null(filter)){
     code_or_name <- geodato:::is_code_or_name(filter, map_name)
@@ -67,7 +75,7 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
   lt <- leaflet::leaflet(dgeo,
                          option = lf_options) |>
     leaflet::addPolygons(weight = opts$theme$border_weight,
-                         label = ~ name,
+                         label = ~ ..labels,
                          color =  opts$theme$border_color,
                          fillColor = ~ ..color,
                          fillOpacity = opts$theme$topo_fill_opacity,
