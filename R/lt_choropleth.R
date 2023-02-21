@@ -44,16 +44,18 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
     palette <- opts$theme$palette_colors_categorical
   }
   dgeo$..color <- paletero::paletero(dgeo$..var,
-                                               palette = palette,
-                                               na.color = opts$theme$na_color)
+                                     palette = palette,
+                                     na.color = opts$theme$na_color)
 
   # Calculate tooltip
   vars <- names(data)[!grepl("^\\.\\.|geometry", names(data))]
   tooltip <- opts$chart$tooltip %||% NULL
   dd <- sf::st_drop_geometry(dgeo) |>
     select(name, any_of(vars))
-  dgeo$..labels <- dsdataprep::prep_tooltip(data = dd, tooltip = tooltip,
-                                   na_row_default_column = "name")
+  tooltip <- dsdataprep::prep_tooltip(data = dd, tooltip = tooltip,
+                           na_row_default_column = "name")
+
+  dgeo$..labels <- map(tooltip, htmltools::HTML)
 
   # Filter regions
   if(!is.null(filter)){

@@ -16,8 +16,13 @@ test_that("Maps of the world", {
     tooltip = "Hola {country}, Cantidad: {cantidad}, Cat: {categoria}"
   )
   tooltip <- opts_list$tooltip
+
+  lt_choropleth(data, map_name = map_name, var = var)
+
   lt_choropleth(data, map_name = map_name, var = var, opts = opts_list)
   var <- "categoria"
   lt_choropleth(data, map_name = map_name, var = var, opts = opts_list)
+
+
 
 })
