@@ -7,6 +7,15 @@
 ## usethis namespace: end
 NULL
 
+#' @keywords internal
+getfun <- function(x) {
+  if(length(grep("::", x))>0) {
+    parts<-strsplit(x, "::")[[1]]
+    getExportedValue(parts[1], parts[2])
+  } else {
+    x
+  }
+}
 
 #' @keywords internal
 frtype_viz <- function(var_gnm = NULL,
