@@ -44,16 +44,16 @@ data_map_draw <- function(data = NULL,
   map_name <- opts$map_name
   if(is.null(map_name)) stop("No map name provided, see available_maps()")
 
-  tj <- geodato::gd_tj(map_name)
+  tj <- gd_tj(map_name)
 
   if(!is.null(data)){
 
     vars <- c(var_geo, var_num)
     data <- data |>
-      dplyr::select(vars, dplyr::everything())
+      select(vars, everything())
 
     if (length(var_geo) == 1) {
-      col <- geodato::parse_col(data, var_geo)
+      col <- parse_col(data, var_geo)
     }
 
 
@@ -74,19 +74,26 @@ data_map_draw <- function(data = NULL,
                                              format_date = opts$format_sample_dat)
     }
 
-    data_join <- geodato::gd_match(data, map_name)
+    data_join <- gd_match(data, map_name)
 
     dgeo <- tj |>
-      dplyr::left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
+      left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
     dgeo <- dgeo |>
-      dplyr::mutate(label = ifelse(is.na(label), name, label) |>
+      mutate(label = ifelse(is.na(label), name, label) |>
                       lapply(htmltools::HTML))
 
   } else{
     dgeo <- tj
   }
 
-
+  if(!is.null(opts$filter)){
+    code_or_name <- is_code_or_name(opts$filter, map_name)
+    if(opts$code_or_name == "name"){
+      filter <- tibble::tibble(filter = opts$filter) |>
+        gd_match(map_name) |> pull(..gd_id)
+    }
+    dgeo <- dgeo |> filter(id %in% filter)
+  }
 
   list(
     var_geo = var_geo,
