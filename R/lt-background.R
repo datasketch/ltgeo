@@ -48,3 +48,43 @@ lt_logo <- function(map,
                     width = width)
 
 }
+
+lt_tiles <- function(map, opts) {
+  lf <- NULL
+  if (is.null(opts$map_tiles) & opts$map_provider_tile == "leaflet") {
+    lf <- map |>
+      leaflet.extras::setMapWidgetStyle(list(background = opts$background_color))
+  } else {
+    switch(opts$map_provider_tile,
+           "leaflet" = lf <- map |> leaflet::addProviderTiles(opts$map_tiles),
+           "esri" = {
+             lf <- map |> leaflet.esri::addEsriBasemapLayer(leaflet.esri::esriBasemapLayers[[opts$map_tiles_esri]])
+             if (!is.null(opts$map_extra_layout)) {
+               lf <- lf |>
+                 leaflet.esri::addEsriFeatureLayer(
+                   url = opts$map_extra_layout,
+                   labelProperty = opts$map_name_layout)
+             }
+           },
+           {
+             lf <- map |> leaflet::addTiles(urlTemplate = opts$map_extra_layout,
+                                            attribution = opts$map_name_layout)
+           }
+    )
+  }
+
+  lf
+}
+
+
+# lt_background <- function(map, opts) {
+#
+# }
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-test_that("Legend in map", {
+test_that("Logo in map", {
 
   leaflet() |>
     addTiles() |>
