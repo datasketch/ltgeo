@@ -9,6 +9,9 @@ lt_palette <- function(opts) {
     na.color = opts$na_color
   )
 
+  if (is.null(l$domain)) return()
+  if (all(is.na(l$domain))) return()
+
   if (opts$color_scale %in% c("Category", "Custom")) {
     color_mapping <- "colorFactor"
   } else if (opts$color_scale == "Quantile") {
@@ -23,6 +26,5 @@ lt_palette <- function(opts) {
   }
 
   color_mapping <- paste0("leaflet::", color_mapping)
-  print(colors)
   do.call(getfun(color_mapping), l)
 }

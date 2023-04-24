@@ -73,7 +73,7 @@ data_map_draw <- function(data = NULL,
                                              format_cat = opts$format_sample_cat,
                                              format_date = opts$format_sample_dat)
     }
-
+    data$..domain <- data[[var_num]]
     data_join <- gd_match(data, map_name)
 
     dgeo <- tj |>
@@ -84,6 +84,8 @@ data_map_draw <- function(data = NULL,
 
   } else{
     dgeo <- tj
+    dgeo$label <- dgeo$name
+    dgeo$..domain <- NA
   }
 
   if(!is.null(opts$filter)){

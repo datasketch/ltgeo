@@ -20,7 +20,7 @@ test_that("Colors", {
 
   pal <- lt_palette(opts)
 
-
+  valor <- "value"
   leaflet::leaflet(data_geo$map_data) |>
     leaflet::addPolygons(weight = 1,
                          label = ~ label,
