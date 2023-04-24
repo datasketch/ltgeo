@@ -1,17 +1,19 @@
 
 #' @keywords internal
 lt_logo <- function(map,
-                    logo = NULL,
-                    logo_color = NULL,
-                    background_color = "transparent",
-                    img_file = NULL,
-                    width = NULL,
-                    height = NULL,
-                    position = "bottomright",
-                    url = NULL) {
+                    opts) {
   logo_path <- NULL
   src <- "remote"
   svg <- FALSE
+  logo <- opts$logo
+  logo_color <- opts$logo_color
+  background_color <- opts$background_color %||% "transparent"
+  img_file <- opts$img_file
+  width <- opts$width %||% 150
+  height <- opts$height %||% 150
+  position <- opts$position %||% "bottomright"
+  url <- opts$url
+
   #Aplica cuando se llama una organizacion que se encuentra en dsthemer
   if (!is.null(logo)) {
     if (is.null(logo_color)) logo_color <- "#ffffff"
@@ -49,6 +51,7 @@ lt_logo <- function(map,
 
 }
 
+#' @keywords internal
 lt_tiles <- function(map, opts) {
   lf <- NULL
   if (is.null(opts$map_tiles) & opts$map_provider_tile == "leaflet") {
@@ -76,10 +79,25 @@ lt_tiles <- function(map, opts) {
   lf
 }
 
+#' @export
+lt_background <- function(map,
+                          opts_tiles = NULL,
+                          opts_branding = NULL) {
 
-# lt_background <- function(map, opts) {
-#
-# }
+  if (is.null(map)) return()
+  lf <- map
+
+  if (!is.null(opts_tiles$map_provider_tile)) {
+    lf <- lf |>
+      lt_tiles(opts = opts_tiles)
+  }
+  if (opts_branding$branding_include) {
+    lf <- lf |>
+      lt_logo(opts = opts_branding)
+  }
+  lf
+
+}
 
 
 
