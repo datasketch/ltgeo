@@ -14,7 +14,7 @@ test_that("legend in map", {
     fill_opacity = 1,
     opacity = 1
   )
-
+  opts_colors$pal <- lt_palette(opts_colors)
   opts_legend <- list(
     position = "bottomleft",
     pal = lt_palette(opts_colors),
@@ -42,6 +42,6 @@ test_that("legend in map", {
 
 
   leaflet::leaflet(data_geo$map_data) |>
-    lt_choropleth(opts = opts_colors) |>
+    ltg_choropleth(opts = opts_colors) |>
     lt_legend(opts = opts_legend)
 })

@@ -39,6 +39,8 @@ lflt_legend_format <- function(opts,
 #' @export
 lt_legend <- function(map, opts) {
 
+  #if (!opts$legend_show) return(map)
+
   opts_legend <- list(
     map = map,
     position = opts$legend_position,
@@ -59,7 +61,7 @@ lt_legend <- function(map, opts) {
     opts_legeng$colors <- opts$extra_colors
   }
 
-    do.call("addLegend", opts_legend)
+  do.call("addLegend", opts_legend)
 }
 
 # lflt_legend_bubbles <- function(map, colors, labels, sizes,

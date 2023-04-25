@@ -16,7 +16,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
     background_color = opts$theme$background_color,
     map_tiles_esri = opts$theme$map_tiles_esri,
     map_extra_layout = opts$theme$map_extra_layout,
-    map_name_layout = opts$theme$map_name_layout,
+    map_name_layout = opts$theme$map_name_layout
   )
   branding_opts = list(
     logo = opts$theme$logo,
@@ -35,8 +35,9 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                       n_quantile = opts$map$map_quantile,
                       n_bins = opts$map$map_bins,
                       pretty = opts$map$map_bins_pretty
-                      )
-  legend_opts <- list(legend_position = opts$theme$legend_position,
+  )
+  legend_opts <- list(legend_show = opts$theme$legend_show,
+                      legend_position = opts$theme$map_legend_position %||% "bottomleft",
                       na_label = opts$prep$na_label,
                       legend_bins = opts$map$map_bins,
                       legend_opacity = opts$map$map_opacity,
@@ -49,7 +50,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                       legend_title = opts$titles$legend_title,
                       legend_id = opts$theme$legend_id,
                       legend_group = opts$theme$legend_group
-                      )
+  )
   data_opts <- list(map_name = opts$map$map_name,
                     tooltip_template = opts$chart$tooltip_template,
                     na_label = opts$prep$na_label,
@@ -61,16 +62,16 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                     format_sample_dat = opts$prep$format_sample_dat,
                     color_by = opts$prep$color_by,
                     filter = opts$map$filter_region
-                    )
+  )
 
   general_opts <- list(layer_id = opts$map$map_layer,
-                   group = opts$map$map_group,
-                   stroke = opts$map$map_stroke,
-                   color = opts$theme$border_color,
-                   weight = opts$theme$border_weight,
-                   popup = opts$map$map_popup,
-                   popup_options = opts$map$map_popup_options,
-                   label_options = opts$map$map_label_options
+                       group = opts$map$map_group,
+                       stroke = opts$map$map_stroke,
+                       color = opts$theme$border_color,
+                       weight = opts$theme$border_weight,
+                       popup = opts$map$map_popup,
+                       popup_options = opts$map$map_popup_options,
+                       label_options = opts$map$map_label_options
 
   )
 
@@ -78,7 +79,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
     choropleth_opts <- list(
       opacity = opts$map$map_opacity,
       fill = opts$map$map_fill %||% TRUE,
-      fill_opacity = opts$map$map_fill_opacity %||% 1,
+      fill_opacity = opts$map$map_fill_opacity %||% 0.8,
       dashArray = opts$map$map_dash,
       smooth_factor = opts$map$map_smooth %||% 1,
       no_clip = opts$map$map_noclip %||% FALSE,
@@ -96,6 +97,24 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
        branding_opts = branding_opts,
        tiles_opts = tiles_opts
        #theme = opts$theme
-       )
+  )
 
 }
+
+
+
+dataprep_opts <- function(...) {
+  opts <- dsvizopts::merge_dsviz_options(...)
+  list(
+    agg = opts$prep$agg,
+    agg_text = opts$prep$agg_text,
+    percentage = opts$prep$percentage,
+    percentage_name = opts$prep$percentage_col,
+    extra_col = opts$prep$collapse_rows,
+    agg_extra = opts$prep$agg_collapse_rows
+  )
+}
+
+
+
+
