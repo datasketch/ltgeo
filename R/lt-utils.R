@@ -1,5 +1,5 @@
 #' @keywords internal
-lt_choropleth <- function(map, opts) {
+ltg_choropleth <- function(map, opts) {
 
   pal <- lt_palette(opts =
                       list(
