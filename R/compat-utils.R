@@ -75,7 +75,6 @@ data_map_draw <- function(data = NULL,
     }
     data$..domain <- data[[var_num]]
     data_join <- gd_match(data, map_name)
-
     dgeo <- tj |>
       left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
     dgeo <- dgeo |>
