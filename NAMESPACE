@@ -2,7 +2,9 @@
 
 export(lt_background)
 export(lt_choropleth)
+export(lt_choropleth_Gcd)
 export(lt_choropleth_GcdNum)
+export(lt_choropleth_Gnm)
 export(lt_choropleth_GnmNum)
 export(lt_legend)
 importFrom(dplyr,mutate)

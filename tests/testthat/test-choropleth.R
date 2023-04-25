@@ -10,6 +10,7 @@ test_that("Choropleth function", {
 
 
   lt_choropleth_GnmNum(data,  map_name = "col_departments")
+  lt_choropleth_Gnm(data,  map_name = "col_departments")
 
   # Data with codes 9 instead of "09".
   data <- tibble::tribble(
@@ -35,5 +36,6 @@ test_that("Choropleth function", {
 
   data <- data |> select(id, cantidad, everything())
   lt_choropleth_GcdNum(data, map_name = "gtm_departments")
+  lt_choropleth_Gcd(data, map_name = "gtm_departments")
 
 })

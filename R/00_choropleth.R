@@ -32,6 +32,23 @@ lt_choropleth <- function(data = NULL,
 
 }
 
+
+#' @export
+lt_choropleth_Gnm <- function(data, ...) {
+  var_gnm <- names(data)[1]
+  opts_prep <- dataprep_opts(...)
+  var_num_name <- opts_prep$agg_text %||% "Count"
+  data <- dsdataprep::aggregation_data(data = data,
+                                       agg = "count",
+                                       group_var = var_gnm,
+                                       agg_name = var_num_name,
+                                       percentage = opts_prep$percentage,
+                                       percentage_name = opts_prep$percentage_name,
+                                       extra_col = opts_prep$extra_col,
+                                       agg_extra = opts_prep$agg_extra)
+  lt_choropleth(data = data, var_gnm = var_gnm, var_num = var_num_name, ...)
+}
+
 #' @export
 lt_choropleth_GnmNum <-  function(data, ...) {
   var_gnm <- names(data)[1]
@@ -53,6 +70,21 @@ lt_choropleth_GnmNum <-  function(data, ...) {
 }
 
 
+#' @export
+lt_choropleth_Gcd <- function(data, ...) {
+  var_gcd <- names(data)[1]
+  opts_prep <- dataprep_opts(...)
+  var_num_name <- opts_prep$agg_text %||% "Count"
+  data <- dsdataprep::aggregation_data(data = data,
+                                       agg = "count",
+                                       group_var = var_gcd,
+                                       agg_name = var_num_name,
+                                       percentage = opts_prep$percentage,
+                                       percentage_name = opts_prep$percentage_name,
+                                       extra_col = opts_prep$extra_col,
+                                       agg_extra = opts_prep$agg_extra)
+  lt_choropleth(data = data, var_gcd = var_gcd, var_num = var_num_name, ...)
+}
 
 #' @export
 lt_choropleth_GcdNum <-  function(data, ...) {
