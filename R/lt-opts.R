@@ -10,7 +10,25 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
     caption = opts$titles$caption,
     caption_show = !is.null(opts$titles$caption)
   )
-
+  tiles_opts <- list(
+    map_tiles = opts$theme$map_tiles,
+    map_provider_tile = opts$theme$map_provider_tile,
+    background_color = opts$theme$background_color,
+    map_tiles_esri = opts$theme$map_tiles_esri,
+    map_extra_layout = opts$theme$map_extra_layout,
+    map_name_layout = opts$theme$map_name_layout,
+  )
+  branding_opts = list(
+    logo = opts$theme$logo,
+    logo_color = opts$theme$logo_color %||% "#FFFFFF",
+    background_color = opts$theme$branding_background_color %||% "transparent",
+    img_file = opts$theme$logo_file,
+    width = opts$theme$logo_width,
+    height = opts$theme$logo_height,
+    position = opts$theme$branding_position %||% "bottomright",
+    url = opts$theme$logo_url,
+    branding_include = opts$theme$branding_include
+  )
   colors_opts <- list(palette = palette_colors,
                       na_color = opts$theme$na_color,
                       color_scale = opts$map$map_color_scale,
@@ -67,11 +85,13 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   }
 
 
-  list(titles = titles,
+  list(titles = titles_opts,
        data_opts = data_opts,
        general_opts = general_opts,
        colors_opts = colors_opts,
-       legend_opts = legend_opts
+       legend_opts = legend_opts,
+       branding_opts = branding_opts,
+       tiles_opts = tiles_opts
        #theme = opts$theme
        )
 
