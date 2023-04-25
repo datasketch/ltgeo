@@ -31,3 +31,26 @@ lt_choropleth <- function(data = NULL,
     lt_legend(opts$legend_opts)
 
 }
+
+#' @export
+lt_choropleth_GnmNum <-  function(data, ...) {
+  var_gnm <- names(data)[1]
+  var_num <- names(data)[2]
+  opts_prep <- dataprep_opts(...)
+  var_num_name <- opts_prep$agg_text %||% var_num
+
+  data <- dsdataprep::aggregation_data(data = data,
+                                       agg = opts_prep$agg,
+                                       agg_name = var_num_name,
+                                       group_var = var_gnm,
+                                       to_agg = var_num,
+                                       percentage = opts_prep$percentage,
+                                       percentage_name = opts_prep$percentage_name,
+                                       extra_col = opts_prep$extra_col,
+                                       agg_extra = opts_prep$agg_extra)
+
+  lt_choropleth(data = data, var_gnm = var_gnm, var_num = var_num_name, ...)
+}
+
+
+

@@ -100,3 +100,21 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   )
 
 }
+
+
+
+dataprep_opts <- function(...) {
+  opts <- dsvizopts::merge_dsviz_options(...)
+  list(
+    agg = opts$prep$agg,
+    agg_text = opts$prep$agg_text,
+    percentage = opts$prep$percentage,
+    percentage_name = opts$prep$percentage_col,
+    extra_col = opts$prep$collapse_rows,
+    agg_extra = opts$prep$agg_collapse_rows
+  )
+}
+
+
+
+
