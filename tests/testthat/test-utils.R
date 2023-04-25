@@ -28,7 +28,7 @@ test_that("General functions to create maps", {
 
 
   leaflet::leaflet(data_geo$map_data) |>
-    lt_choropleth(opts = opts_colors)
+    ltg_choropleth(opts = opts_colors)
 
 
 })

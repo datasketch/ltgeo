@@ -16,7 +16,8 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                       color_scale = opts$map$map_color_scale,
                       n_quantile = opts$map$map_quantile,
                       n_bins = opts$map$map_bins,
-                      pretty = opts$map$map_bins_pretty)
+                      pretty = opts$map$map_bins_pretty
+                      )
   legend_opts <- list(legend_position = opts$theme$legend_position,
                       na_label = opts$prep$na_label,
                       legend_bins = opts$map$map_bins,
@@ -29,7 +30,8 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                                            locale = NULL),
                       legend_title = opts$titles$legend_title,
                       legend_id = opts$theme$legend_id,
-                      legend_group = opts$theme$legend_group)
+                      legend_group = opts$theme$legend_group
+                      )
   data_opts <- list(map_name = opts$map$map_name,
                     tooltip_template = opts$chart$tooltip_template,
                     na_label = opts$prep$na_label,
@@ -40,7 +42,8 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                     format_sample_cat = opts$prep$format_sample_cat,
                     format_sample_dat = opts$prep$format_sample_dat,
                     color_by = opts$prep$color_by,
-                    filter = opts$map$filter_region)
+                    filter = opts$map$filter_region
+                    )
 
   general_opts <- list(layer_id = opts$map$map_layer,
                    group = opts$map$map_group,
@@ -56,18 +59,18 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   if (viz == "choropleth") {
     choropleth_opts <- list(
       opacity = opts$map$map_opacity,
-      fill = opts$map$map_fill,
-      fill_opacity = opts$map$map_fill_opacity,
+      fill = opts$map$map_fill %||% TRUE,
+      fill_opacity = opts$map$map_fill_opacity %||% 1,
       dashArray = opts$map$map_dash,
-      smooth_factor = opts$map$map_smooth,
-      no_clip = opts$map$map_noclip,
+      smooth_factor = opts$map$map_smooth %||% 1,
+      no_clip = opts$map$map_noclip %||% FALSE,
       highlight_options = opts$map$map_highlight
     )
-    general_opts <- modifyList(general_opts, choropleth_opts)
+    general_opts <- c(general_opts, choropleth_opts)
   }
 
 
-  list(titles = titles,
+  list(titles = titles_opts,
        data_opts = data_opts,
        general_opts = general_opts,
        colors_opts = colors_opts,
