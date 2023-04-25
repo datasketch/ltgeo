@@ -20,10 +20,14 @@ lt_choropleth <- function(data = NULL,
                             var_num = var_num,
                             opts = opts$data_opts)
   opts$colors_opts$domain <- setdiff(data_geo$map_data$..domain, NA)
-
-  leaflet::leaflet(data_geo$map_data) |>
+  pal <- lt_palette(opts$colors_opts)
+  opts$colors_opts$pal <- pal
+  opts$legend_opts$pal <- pal
+  leaflet(data_geo$map_data) |>
+    lt_background(opts_tiles = opts$tiles_opts,
+                  opts_branding = opts$branding_opts) |>
     ltg_choropleth(opts = c(opts$colors_opts,
-                            opts$general_opts)
-                   )
+                            opts$general_opts)) |>
+    lt_legend(opts$legend_opts)
 
 }

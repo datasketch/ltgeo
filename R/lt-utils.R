@@ -1,14 +1,14 @@
 #' @keywords internal
 ltg_choropleth <- function(map, opts) {
-
-  pal <- lt_palette(opts =
-                      list(
-                        color_scale = opts$color_scale,
-                        palette = opts$palette,
-                        domain = opts$domain,
-                        na_color = opts$na_color
-                      )
-  )
+#
+#   pal <- lt_palette(opts =
+#                       list(
+#                         color_scale = opts$color_scale,
+#                         palette = opts$palette,
+#                         domain = opts$domain,
+#                         na_color = opts$na_color
+#                       )
+#   )
 
   map |>
     addPolygons(
@@ -19,7 +19,7 @@ ltg_choropleth <- function(map, opts) {
       weight = opts$weight,
       opacity = opts$opacity,
       fill = opts$fill,
-      fillColor = ~pal(..domain),
+      fillColor = ~opts$pal(..domain),
       fillOpacity = opts$fill_opacity,
       dashArray = opts$dashArray,
       smoothFactor = opts$smooth_factor,
