@@ -12,6 +12,14 @@ test_that("Choropleth function", {
   lt_choropleth_GnmNum(data,  map_name = "col_departments")
   lt_choropleth_Gnm(data,  map_name = "col_departments")
 
+
+  data <- data.frame(mcpio = c("Dagua", "El Encanto", "La Chorrera", "Abejorral"),
+                     valor = runif(4, 100, 500))
+
+  lt_choropleth_GnmNum(data,  map_name = "col_municipalities")
+
+
+
   # Data with codes 9 instead of "09".
   data <- tibble::tribble(
     ~id, ~departamento, ~cantidad, ~categoria,

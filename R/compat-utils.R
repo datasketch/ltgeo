@@ -52,11 +52,6 @@ data_map_draw <- function(data = NULL,
     data <- data |>
       select(vars, everything())
 
-    if (length(var_geo) == 1) {
-      col <- parse_col(data, var_geo)
-    }
-
-
     if (!"..labels" %in% names(data)) {
       data$label <- dsdataprep::prep_tooltip(data = data,
                                              tooltip = opts$tooltip_template,
@@ -74,12 +69,22 @@ data_map_draw <- function(data = NULL,
                                              format_date = opts$format_sample_dat)
     }
     data$..domain <- data[[var_num]]
+
+    if (length(var_geo) == 1) {
     data_join <- gd_match(data, map_name)
     dgeo <- tj |>
       left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
     dgeo <- dgeo |>
       mutate(label = ifelse(is.na(label), name, label) |>
                       lapply(htmltools::HTML))
+    } else {
+      dgeo <- tj
+      dgeo$label <- dgeo$name
+      dgeo$..domain <- NA
+      data$label <- lapply(data$label, htmltools::HTML)
+      dgeo <- list(dgeo = dgeo,
+                   data = data)
+    }
 
   } else{
     dgeo <- tj
