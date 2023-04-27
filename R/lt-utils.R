@@ -47,10 +47,10 @@ ltg_circles <- function(map, opts) {
       fillColor = opts$map_circle_color %||% ~opts$pal(..domain),
       fillOpacity =  opts$map_circle_fill_opactity,
       dashArray =  opts$map_circle_dashArray,
-      popup = opts$map_circle_pupup,
-      popupOptions = opts$map_circle_popupOptions,
+      popup = opts$popup,
+      popupOptions = opts$popup_options,
       label = ~label,
-      labelOptions = opts$map_circle_labelOptions,
+      labelOptions = opts$label_options,
       clusterOptions = cluster_add,
       clusterId = opts$map_cluster_id
     )
