@@ -87,6 +87,22 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
     )
     general_opts <- c(general_opts, choropleth_opts)
   }
+  if (viz == "circles") {
+    circle_opts <- list(
+      map_basic = opts$map$map_basic %||% TRUE,
+      map_radius = opts$map$map_radius,
+      map_circle_color = opts$map$map_circle_color,
+      map_circle_weight = opts$map$map_circle_weight,
+      map_circle_opacity = opts$map_circle_opacity,
+      fill = opts$map$map_circle_fill,
+      map_circle_color = opts$map$circle_color,
+      map_circle_fill_opactity = opts$map$map_circle_fill_opactity,
+      label = ~label,
+      cluster_add = opts$map$map_cluster %||% FALSE,
+      map_cluster_id = opts$map$map_cluster_id
+    )
+    general_opts <- c(general_opts, circle_opts)
+  }
 
 
   list(titles = titles_opts,
