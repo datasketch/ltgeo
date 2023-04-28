@@ -5,6 +5,10 @@ test_that("Circle function", {
              var_glt = "lat",
              var_num = "mag")
 
+  data <- data |> select(long, everything())
+  lt_circles_GlnGlt(data, map_basic = FALSE)
+  lt_circles_GlnGltNum(data, map_basic = FALSE)
+
   # map cluster solo funciona si tiene un tile
   lt_circles(data,
              var_gln = "long",
@@ -20,5 +24,8 @@ test_that("Circle function", {
   lt_circles(data,
              var_num = "value",
              map_name = "col_departments")
+
+
+  lt_circles_GnmNum(data, map_name = "col_departments")
 
 })
