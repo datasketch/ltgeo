@@ -60,7 +60,33 @@ ltg_circles <- function(map, opts) {
       clusterOptions = cluster_add,
       clusterId = opts$map_cluster_id
     )
-
-
 }
 
+#' @keywords internal
+ltg_hexmap <- function(map, opts) {
+
+  if (opts$map_basic) {
+    map <- map |>
+      ltg_choropleth(opts$basic_choropleth)
+  }
+
+  leaflet.extras2::addHexbin(
+    data = opts$extra_data %||% getMapData(map),
+    map = map,
+    lng = ~lon,
+    lat = ~lat,
+    radius = opts$map_radius %||%
+      ~scales::rescale(..domain, c(opts$map_min, opts$map_max)),
+    layerId = opts$layer_id,
+    group = opts$group,
+    opacity = opts$map_hex_opacity,
+    options = leaflet.extras2::hexbinOptions(duration = 200,
+                                             colorScaleExtent = NULL,
+                                             radiusScaleExtent = NULL,
+                                             colorRange = c("#f7fbff", "#08306b"),
+                                             radiusRange = c(5, 15),
+                                             pointerEvents = "all",
+                                             resizetoCount = FALSE,
+                                             tooltip = FALSE)
+  )
+}
