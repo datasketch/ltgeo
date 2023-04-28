@@ -40,21 +40,13 @@ test_that("General functions to create maps", {
                             var_geo = c("lon", "lat"),
                             var_num = "mag",
                             opts = list(
+                              data_rename = FALSE,
                               map_name = "world_countries_world")
   )
 
-  opts_colors <- list(
-    color_scale = "sequential",
-    palette = "#ffffff",
-    domain = 1,
-    na_color = "#FCFCFC",
-    weight = 1,
-    color =  "#DDDDDD",
-    fill_opacity = 1,
-    opacity = 1
-  )
-  opts_colors$pal <- lt_palette(opts_colors)
+
   opts_circles <- list(
+    map_basic = FALSE,
     cluster_add = TRUE,
     cluster_opts = list(showCoverageOnHover = TRUE,
                         removeOutsideVisibleBounds = F),

@@ -5,13 +5,14 @@ lt_choropleth <- function(data = NULL,
                           var_gcd = NULL,
                           var_num = NULL, ...) {
 
-  if (is.null(var_gnm) & is.null(var_gcd))
-    stop("You must enter at least one geographic variable")
+
+  var_geo <- var_gnm %||% var_gcd %||% geodato::parse_col(data)
+  if (is.null(var_geo)) stop("You must enter at least one geographic variable")
 
   frType <- frtype_viz(var_gnm = var_gnm,
                        var_gcd = var_gcd,
                        var_num = var_num)
-  var_geo <- var_gnm %||% var_gcd
+
   opts <- plot_opts(viz = "choropleth", frType = frType, ...)
 
   data_geo <- data_map_draw(data = data,

@@ -82,6 +82,12 @@ data_map_draw <- function(data = NULL,
       dgeo$label <- dgeo$name
       dgeo$..domain <- NA
       data$label <- lapply(data$label, htmltools::HTML)
+      if (opts$data_rename) {
+      var_lon <- var_geo[1]
+      var_lat <- var_geo[2]
+      data <- data |> rename(lon = {{var_lon}},
+                             lat = {{var_lat}})
+      }
       dgeo <- list(dgeo = dgeo,
                    data = data)
     }
