@@ -64,6 +64,14 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                     filter = opts$map$filter_region
   )
 
+
+  basic_map <- list(map_color = opts$map$map_color %||% "#fafafa",
+                    opacity = opts$map$map_opacity,
+                    fill = opts$map$map_fill %||% TRUE,
+                    fill_opacity = opts$map$map_fill_opacity %||% 0.2,
+                    color = opts$theme$border_color,
+                    weight = opts$theme$border_weight)
+
   general_opts <- list(layer_id = opts$map$map_layer,
                        group = opts$map$map_group,
                        stroke = opts$map$map_stroke,
@@ -89,12 +97,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   }
   if (viz == "circles") {
     circle_opts <- list(
-      basic_choropleth = list(map_color = opts$map$map_color %||% "#fafafa",
-                              opacity = opts$map$map_opacity,
-                              fill = opts$map$map_fill %||% TRUE,
-                              fill_opacity = opts$map$map_fill_opacity %||% 0.2,
-                              color = opts$theme$border_color,
-                              weight = opts$theme$border_weight),
+      basic_choropleth = basic_map,
       map_basic = opts$map$map_basic,
       map_radius = opts$map$map_radius,
       map_min = opts$map$map_min_size,
@@ -105,7 +108,6 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
       fill = opts$map$map_circle_fill,
       map_circle_color = opts$map$map_circle_color,
       map_circle_fill_opactity = opts$map$map_circle_fill_opactity,
-      label = ~label,
       cluster_add = opts$map$map_cluster,
       cluster_opts = list(showCoverageOnHover = TRUE,
                           zoomToBoundsOnClick = TRUE,
@@ -118,6 +120,18 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
     general_opts <- c(general_opts, circle_opts)
   }
 
+  if (viz == "hexmap") {
+    hexmap_opts <- list(
+      basic_choropleth = basic_map,
+      map_basic = opts$map$map_basic,
+      map_radius = opts$map$map_radius,
+      map_min = opts$map$map_min_size,
+      map_max = opts$map$map_max_size,
+      map_hex_opacity = opts$map$map_hex_opacity,
+      colors = palette_colors
+    )
+    general_opts <- c(general_opts, hexmap_opts)
+  }
 
   list(titles_opts = titles_opts,
        data_opts = data_opts,

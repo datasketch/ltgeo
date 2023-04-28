@@ -83,7 +83,7 @@ ltg_hexmap <- function(map, opts) {
     options = leaflet.extras2::hexbinOptions(duration = 200,
                                              colorScaleExtent = NULL,
                                              radiusScaleExtent = NULL,
-                                             colorRange = c("#f7fbff", "#08306b"),
+                                             colorRange = c(opts$colors[1], opts$colors[2]),
                                              radiusRange = c(5, 15),
                                              pointerEvents = "all",
                                              resizetoCount = FALSE,
