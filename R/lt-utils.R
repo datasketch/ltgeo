@@ -75,8 +75,7 @@ ltg_hexmap <- function(map, opts) {
     map = map,
     lng = ~lon,
     lat = ~lat,
-    radius = opts$map_radius %||%
-      ~scales::rescale(..domain, c(opts$map_min, opts$map_max)),
+    radius = opts$map_radius,
     layerId = opts$layer_id,
     group = opts$group,
     opacity = opts$map_hex_opacity,
@@ -84,7 +83,7 @@ ltg_hexmap <- function(map, opts) {
                                              colorScaleExtent = NULL,
                                              radiusScaleExtent = NULL,
                                              colorRange = c(opts$colors[1], opts$colors[2]),
-                                             radiusRange = c(5, 15),
+                                             radiusRange = c(opts$map_min, opts$map_max),
                                              pointerEvents = "all",
                                              resizetoCount = FALSE,
                                              tooltip = FALSE)
