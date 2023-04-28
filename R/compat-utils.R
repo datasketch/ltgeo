@@ -67,32 +67,41 @@ data_map_draw <- function(data = NULL,
                                                                     si_prefix = opts$si_prefix),
                                              format_cat = opts$format_sample_cat,
                                              format_date = opts$format_sample_dat)
+    } else {
+      data <- data |> rename(label = ..labels)
     }
-    data$..domain <- data[[var_num]]
+
+    if (!is.null(var_num)) {
+      data$..domain <- data[[var_num]]
+    }
 
     if (length(var_geo) == 1) {
-    data_join <- gd_match(data, map_name)
-    dgeo <- tj |>
-      left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
-    dgeo <- dgeo |>
-      mutate(label = ifelse(is.na(label), name, label) |>
-                      lapply(htmltools::HTML))
+      data_join <- gd_match(data, map_name)
+      dgeo <- tj |>
+        left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
+      if ("label" %in% names(dgeo)) {
+        dgeo <- dgeo |>
+          mutate(label = ifelse(is.na(label), name, label) |>
+                   lapply(htmltools::HTML))
+      }
     } else {
       dgeo <- tj
       dgeo$label <- dgeo$name
       dgeo$..domain <- NA
-      data$label <- lapply(data$label, htmltools::HTML)
+      if ("label" %in% names(data)) {
+        data$label <- lapply(data$label, htmltools::HTML)
+      }
       if (opts$data_rename) {
-      var_lon <- var_geo[1]
-      var_lat <- var_geo[2]
-      data <- data |> rename(lon = {{var_lon}},
-                             lat = {{var_lat}})
+        var_lon <- var_geo[1]
+        var_lat <- var_geo[2]
+        data <- data |> rename(lon = {{var_lon}},
+                               lat = {{var_lat}})
       }
       dgeo <- list(dgeo = dgeo,
                    data = data)
     }
 
-  } else{
+  } else {
     dgeo <- tj
     dgeo$label <- dgeo$name
     dgeo$..domain <- NA
