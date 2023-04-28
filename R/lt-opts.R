@@ -89,10 +89,10 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   }
   if (viz == "circles") {
     circle_opts <- list(
-      basic_choropleth = list(map_color = opts$map$map_color %||% "transparent",
+      basic_choropleth = list(map_color = opts$map$map_color %||% "#fafafa",
                               opacity = opts$map$map_opacity,
-                              fill = opts$map$map_fill %||% FALSE,
-                              fill_opacity = opts$map$map_fill_opacity %||% 0.8,
+                              fill = opts$map$map_fill %||% TRUE,
+                              fill_opacity = opts$map$map_fill_opacity %||% 0.2,
                               color = opts$theme$border_color,
                               weight = opts$theme$border_weight),
       map_basic = opts$map$map_basic,

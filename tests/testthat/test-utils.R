@@ -51,10 +51,23 @@ test_that("General functions to create maps", {
     cluster_opts = list(showCoverageOnHover = TRUE,
                         removeOutsideVisibleBounds = F),
     extra_data = data_geo$map_data$data,
-    map_circle_color = "#28557d"
+    map_circle_color = "#28557d",
+    map_radius = 5
   )
   leaflet::leaflet(data_geo$map_data$dgeo) |>
     addTiles() |>
     ltg_circles(opts = opts_circles)
+
+
+  opts_hex <- list(
+    map_basic = FALSE,
+    extra_data = data_geo$map_data$data,
+    map_radius = 5
+  )
+
+  leaflet::leaflet(data_geo$map_data$dgeo) |>
+    addTiles() |>
+    ltg_hexmap(opts = opts_hex)
+
 
 })
