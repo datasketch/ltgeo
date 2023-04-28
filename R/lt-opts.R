@@ -67,8 +67,6 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   general_opts <- list(layer_id = opts$map$map_layer,
                        group = opts$map$map_group,
                        stroke = opts$map$map_stroke,
-                       color = opts$theme$border_color,
-                       weight = opts$theme$border_weight,
                        popup = opts$map$map_popup,
                        popup_options = opts$map$map_popup_options,
                        label_options = opts$map$map_label_options
@@ -77,6 +75,8 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
 
   if (viz == "choropleth") {
     choropleth_opts <- list(
+      color = opts$theme$border_color,
+      weight = opts$theme$border_weight,
       opacity = opts$map$map_opacity,
       fill = opts$map$map_fill %||% TRUE,
       fill_opacity = opts$map$map_fill_opacity %||% 0.8,
@@ -89,23 +89,37 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   }
   if (viz == "circles") {
     circle_opts <- list(
-      map_basic = opts$map$map_basic %||% TRUE,
+      basic_choropleth = list(map_color = opts$map$map_color %||% "transparent",
+                              opacity = opts$map$map_opacity,
+                              fill = opts$map$map_fill %||% FALSE,
+                              fill_opacity = opts$map$map_fill_opacity %||% 0.8,
+                              color = opts$theme$border_color,
+                              weight = opts$theme$border_weight),
+      map_basic = opts$map$map_basic,
       map_radius = opts$map$map_radius,
+      map_min = opts$map$map_min_size,
+      map_max = opts$map$map_max_size,
       map_circle_color = opts$map$map_circle_color,
       map_circle_weight = opts$map$map_circle_weight,
       map_circle_opacity = opts$map_circle_opacity,
       fill = opts$map$map_circle_fill,
-      map_circle_color = opts$map$circle_color,
+      map_circle_color = opts$map$map_circle_color,
       map_circle_fill_opactity = opts$map$map_circle_fill_opactity,
       label = ~label,
-      cluster_add = opts$map$map_cluster %||% FALSE,
+      cluster_add = opts$map$map_cluster,
+      cluster_opts = list(showCoverageOnHover = TRUE,
+                          zoomToBoundsOnClick = TRUE,
+                          spiderfyOnMaxZoom = TRUE,
+                          removeOutsideVisibleBounds = TRUE,
+                          spiderLegPolylineOptions = list(weight = 1.5, color = "#222", opacity = 0.5),
+                          freezeAtZoom = FALSE),
       map_cluster_id = opts$map$map_cluster_id
     )
     general_opts <- c(general_opts, circle_opts)
   }
 
 
-  list(titles = titles_opts,
+  list(titles_opts = titles_opts,
        data_opts = data_opts,
        general_opts = general_opts,
        colors_opts = colors_opts,

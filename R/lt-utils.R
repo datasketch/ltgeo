@@ -10,7 +10,7 @@ ltg_choropleth <- function(map, opts) {
       weight = opts$weight,
       opacity = opts$opacity,
       fill = opts$fill,
-      fillColor = ~opts$pal(..domain),
+      fillColor = opts$map_color %||% ~opts$pal(..domain),
       fillOpacity = opts$fill_opacity,
       dashArray = opts$dashArray,
       smoothFactor = opts$smooth_factor,
@@ -31,12 +31,18 @@ ltg_circles <- function(map, opts) {
     cluster_add <- do.call("markerClusterOptions", opts$cluster_opts)
   }
 
+  if (opts$map_basic) {
+    map <- map |>
+      ltg_choropleth(opts$basic_choropleth)
+  }
+
   map |>
     addCircleMarkers(
       data = opts$extra_data %||% getMapData(map),
       lng = ~lon,
       lat = ~lat,
-      radius = opts$map_radius %||% ~scales::rescale(..domain, 3, 15),
+      radius = opts$map_radius %||%
+        ~scales::rescale(..domain, c(opts$map_min, opts$map_max)),
       layerId = opts$layer_id,
       group = opts$group,
       stroke = opts$stroke,
