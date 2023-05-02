@@ -35,31 +35,33 @@ ltg_circles <- function(map, opts) {
     map <- map |>
       ltg_choropleth(opts$basic_choropleth)
   }
-
-  map |>
-    addCircleMarkers(
-      data = opts$extra_data %||% getMapData(map),
-      lng = ~lon,
-      lat = ~lat,
-      radius = opts$map_radius %||%
-        ~scales::rescale(..domain, c(opts$map_min, opts$map_max)),
-      layerId = opts$layer_id,
-      group = opts$group,
-      stroke = opts$stroke,
-      color = opts$map_circle_color,
-      weight = opts$map_circle_weight,
-      opacity = opts$map_circle_opacity,
-      fill = opts$fill,
-      fillColor = opts$map_circle_color %||% ~opts$pal(..domain),
-      fillOpacity =  opts$map_circle_fill_opactity,
-      dashArray =  opts$map_circle_dashArray,
-      popup = opts$popup,
-      popupOptions = opts$popup_options,
-      label = ~label,
-      labelOptions = opts$label_options,
-      clusterOptions = cluster_add,
-      clusterId = opts$map_cluster_id
-    )
+  tryCatch({
+    map |>
+      addCircleMarkers(
+        data = opts$extra_data %||% getMapData(map),
+        lng = ~lon,
+        lat = ~lat,
+        radius = opts$map_radius %||%
+          ~scales::rescale(..domain, c(opts$map_min, opts$map_max)),
+        layerId = opts$layer_id,
+        group = opts$group,
+        stroke = opts$stroke,
+        color = opts$map_circle_color,
+        weight = opts$map_circle_weight,
+        opacity = opts$map_circle_opacity,
+        fill = opts$fill,
+        fillColor = opts$map_circle_color %||% ~opts$pal(..domain),
+        fillOpacity =  opts$map_circle_fill_opactity,
+        dashArray =  opts$map_circle_dashArray,
+        popup = opts$popup,
+        popupOptions = opts$popup_options,
+        label = ~label,
+        labelOptions = opts$label_options,
+        clusterOptions = cluster_add,
+        clusterId = opts$map_cluster_id
+      )}, error = function(e) {
+        map
+      })
 }
 
 #' @keywords internal
@@ -70,22 +72,26 @@ ltg_hexmap <- function(map, opts) {
       ltg_choropleth(opts$basic_choropleth)
   }
 
-  leaflet.extras2::addHexbin(
-    data = opts$extra_data %||% getMapData(map),
-    map = map,
-    lng = ~lon,
-    lat = ~lat,
-    radius = opts$map_radius,
-    layerId = opts$layer_id,
-    group = opts$group,
-    opacity = opts$map_hex_opacity,
-    options = leaflet.extras2::hexbinOptions(duration = 200,
-                                             colorScaleExtent = NULL,
-                                             radiusScaleExtent = NULL,
-                                             colorRange = c(opts$colors[1], opts$colors[2]),
-                                             radiusRange = c(opts$map_min, opts$map_max),
-                                             pointerEvents = "all",
-                                             resizetoCount = FALSE,
-                                             tooltip = FALSE)
-  )
+  tryCatch({
+    leaflet.extras2::addHexbin(
+      data = opts$extra_data %||% getMapData(map),
+      map = map,
+      lng = ~lon,
+      lat = ~lat,
+      radius = opts$map_radius,
+      layerId = opts$layer_id,
+      group = opts$group,
+      opacity = opts$map_hex_opacity,
+      options = leaflet.extras2::hexbinOptions(duration = 200,
+                                               colorScaleExtent = NULL,
+                                               radiusScaleExtent = NULL,
+                                               colorRange = c(opts$colors[1], opts$colors[2]),
+                                               radiusRange = c(opts$map_min, opts$map_max),
+                                               pointerEvents = "all",
+                                               resizetoCount = FALSE,
+                                               tooltip = FALSE)
+    )
+  }, error = function(e) {
+    map
+  })
 }
