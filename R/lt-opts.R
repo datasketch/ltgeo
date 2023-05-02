@@ -65,7 +65,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   )
 
 
-  basic_map <- list(map_color = opts$map$map_color %||% "#fafafa",
+  basic_map <- list(map_color = opts$map$map_color,
                     opacity = opts$map$map_opacity,
                     fill = opts$map$map_fill %||% TRUE,
                     fill_opacity = opts$map$map_fill_opacity %||% 0.2,
@@ -83,6 +83,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
 
   if (viz == "choropleth") {
     choropleth_opts <- list(
+      map_color = opts$map$map_color,
       color = opts$theme$border_color,
       weight = opts$theme$border_weight,
       opacity = opts$map$map_opacity,
