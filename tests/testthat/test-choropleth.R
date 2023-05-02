@@ -1,5 +1,7 @@
 test_that("Choropleth function", {
 
+  lt_choropleth(data = NULL)
+
   data <- data.frame(depto = c("Caquetá", "Amazonas", "Vichada",
                                "Meta", "Guainía"),
                      value = runif(5, 1, 100))

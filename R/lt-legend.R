@@ -39,7 +39,7 @@ lflt_legend_format <- function(opts,
 #' @export
 lt_legend <- function(map, opts) {
 
-  #if (!opts$legend_show) return(map)
+  if (is.null(opts$pal)) return(map)
 
   opts_legend <- list(
     map = map,
