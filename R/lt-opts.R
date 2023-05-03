@@ -37,6 +37,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                       pretty = opts$map$map_bins_pretty
   )
   legend_opts <- list(legend_show = opts$theme$legend_show,
+                      legend_discrete = opts$map$map_legend_discrete,
                       legend_position = opts$theme$map_legend_position %||% "bottomleft",
                       na_label = opts$prep$na_label,
                       legend_bins = opts$map$map_bins,
@@ -122,6 +123,8 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   }
 
   if (viz == "hexmap") {
+    legend_opts$legend_sizes <- opts$theme$legend_size
+    legend_opts$pal <- palette_colors
     hexmap_opts <- list(
       basic_choropleth = basic_map,
       map_basic = opts$map$map_basic,

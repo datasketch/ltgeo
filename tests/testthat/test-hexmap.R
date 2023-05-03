@@ -5,6 +5,8 @@ test_that("Hexmap function", {
             var_gln = "long",
             var_glt = "lat",
             map_hex_opacity = 1,
+            legend_discrete = TRUE,
+            legend_labels = c("mayor", "menor"),
             palette_colors = c("yellow", "red"))
 
   n <- 1000

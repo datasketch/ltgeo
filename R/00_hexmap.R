@@ -36,8 +36,8 @@ lt_hexmap <- function(data = NULL,
   leaflet(data_map) |>
     lt_background(opts_tiles = opts$tiles_opts,
                   opts_branding = opts$branding_opts) |>
-    ltg_hexmap(opts = opts$general_opts) #|>
-  #lt_legend(opts$legend_opts)
+    ltg_hexmap(opts = opts$general_opts) |>
+    lt_legend(opts$legend_opts)
 
 }
 
