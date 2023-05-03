@@ -45,7 +45,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   )
   legend_opts <- list(legend_show = opts$theme$legend_show,
                       legend_discrete = opts$map$map_legend_discrete,
-                      legend_position = opts$theme$map_legend_position %||% "bottomleft",
+                      legend_position = opts$map$map_legend_position %||% "bottomleft",
                       na_label = opts$prep$na_label,
                       legend_bins = opts$map$map_bins,
                       legend_opacity = opts$map$map_opacity,
@@ -73,7 +73,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   )
 
 
-  basic_map <- list(map_color = opts$map$map_color,
+  basic_map <- list(map_color = opts$map$map_color %||% opts$theme$na_color,
                     opacity = opts$map$map_opacity,
                     fill = opts$map$map_fill %||% TRUE,
                     fill_opacity = opts$map$map_fill_opacity %||% 0.2,
@@ -91,7 +91,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
 
   if (viz == "choropleth") {
     choropleth_opts <- list(
-      map_color = opts$map$map_color,
+      map_color = opts$map$map_color %||% opts$theme$na_color,
       color = opts$theme$border_color,
       weight = opts$theme$border_weight,
       opacity = opts$map$map_opacity,
