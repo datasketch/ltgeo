@@ -36,42 +36,68 @@ lflt_legend_format <- function(opts,
   }
 }
 
+
+lt_discrete_legend <- function(map, opts){
+
+  colors <- opts$pal
+  labels <- opts$legend_labels
+  sizes <- opts$legend_sizes
+  title <- opts$legend_title
+  na.label <- opts$na_label
+  position <- opts$legend_position
+  opacity <- opts$legend_opacity
+
+  colorAdditions <- paste0(colors, ";border-radius: 50%; width:", sizes, "px; height:", sizes, "px;")
+  labelAdditions <- paste0("<div style='display: inline-block; height: ",
+                           max(sizes), "px; margin-bottom: 3px; line-height: ", max(sizes), "px; font-size: 13px; '>",
+                           labels, "</div>")
+
+  return(leaflet::addLegend(map, colors = colorAdditions, labels = labelAdditions,
+                            opacity = opacity, title = title, na.label = na.label,
+                            position = position))
+}
+
 #' @export
 lt_legend <- function(map, opts) {
 
   if (is.null(opts$pal)) return(map)
 
-  opts_legend <- list(
-    map = map,
-    position = opts$legend_position,
-    pal = opts$pal,
-    values = ~..domain,
-    na.label = opts$na_label,
-    bins = opts$legend_bins,
-    opacity = opts$legend_opacity,
-    labels = opts$legend_labels,
-    labFormat = lflt_legend_format(opts = opts$legend_format),
-    title = opts$legend_title,
-    layerId = opts$legend_id,
-    group = opts$legend_group
-  )
+  if (opts$legend_discrete) {
+    if (is.null(opts$legend_labels)) return(map)
+    opts_discrete <- list(
+      pal = opts$pal,
+      legend_labels = opts$legend_labels,
+      legend_sizes = opts$legend_sizes,
+      legend_title = opts$legend_title,
+      na_label = opts$na_label,
+      legend_position = opts$legend_position,
+      legend_opacity = opts$legend_opacity
+    )
 
-  if (!is.null(opts$extra_colors)) {
-    opts_legend <- opts_legend[-3]
-    opts_legeng$colors <- opts$extra_colors
+    lt_discrete_legend(map, opts_discrete)
+  } else {
+    opts_legend <- list(
+      map = map,
+      position = opts$legend_position,
+      pal = opts$pal,
+      values = ~..domain,
+      na.label = opts$na_label,
+      bins = opts$legend_bins,
+      opacity = opts$legend_opacity,
+      labels = opts$legend_labels,
+      labFormat = lflt_legend_format(opts = opts$legend_format),
+      title = opts$legend_title,
+      layerId = opts$legend_id,
+      group = opts$legend_group
+    )
+
+    if (!is.null(opts$extra_colors)) {
+      opts_legend <- opts_legend[-3]
+      opts_legeng$colors <- opts$extra_colors
+    }
+
+    do.call("addLegend", opts_legend)
   }
-
-  do.call("addLegend", opts_legend)
 }
 
-# lflt_legend_bubbles <- function(map, colors, labels, sizes,
-#                                 title, na.label, position, opacity){
-#   colorAdditions <- paste0(colors, ";border-radius: 50%; width:", sizes, "px; height:", sizes, "px;")
-#   labelAdditions <- paste0("<div style='display: inline-block; height: ",
-#                            max(sizes), "px; margin-bottom: 3px; line-height: ", max(sizes), "px; font-size: 13px; '>",
-#                            makeup::makeup_num(labels), "</div>")
-#
-#   return(leaflet::addLegend(map, colors = colorAdditions, labels = labelAdditions,
-#                             opacity = opacity, title = title, na.label = na.label,
-#                             position = position))
-# }
+
