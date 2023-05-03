@@ -1,6 +1,8 @@
 test_that("Choropleth function", {
 
-  lt_choropleth(data = NULL)
+  lt_choropleth(data = NULL,
+                map_color = "transparent",
+                border_color = "#ccc")
 
   data <- data.frame(depto = c("Caquetá", "Amazonas", "Vichada",
                                "Meta", "Guainía"),

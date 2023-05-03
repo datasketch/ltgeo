@@ -18,6 +18,13 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
     map_extra_layout = opts$theme$map_extra_layout,
     map_name_layout = opts$theme$map_name_layout
   )
+  zoom_opts <- list(
+    zoomSnap = opts$map$map_zoom_snap,
+    zoomDelta = opts$map$map_zoom_delta,
+    zoomControl = opts$theme$map_zoom,
+    minZoom = opts$map$map_min_zoom,
+    maxZoom = opts$map$map_max_zoom
+  )
   branding_opts = list(
     logo = opts$theme$logo,
     logo_color = opts$theme$logo_color %||% "#FFFFFF",
@@ -138,6 +145,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   }
 
   list(titles_opts = titles_opts,
+       zoom_opts = zoom_opts,
        data_opts = data_opts,
        general_opts = general_opts,
        colors_opts = colors_opts,

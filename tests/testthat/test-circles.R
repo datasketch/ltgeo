@@ -3,7 +3,7 @@ test_that("Circle function", {
   lt_circles(data,
              var_gln = "long",
              var_glt = "lat",
-             var_num = "mag")
+             var_num = "mag",  map_basic = FALSE)
 
   data <- data |> select(long, everything())
   lt_circles_GlnGlt(data, map_basic = FALSE)
