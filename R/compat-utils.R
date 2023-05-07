@@ -76,9 +76,18 @@ data_map_draw <- function(data = NULL,
     }
 
     if (length(var_geo) == 1) {
-      data_join <- gd_match(data, map_name)
-      dgeo <- tj |>
-        left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
+
+      dgeo <- tryCatch({
+        data_join <- gd_match(data, map_name)
+        tj |>
+          left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
+      },
+      error = function(e) {
+        data_join <- data |> rename(..gd_name = !!var_geo)
+        tj |>
+          left_join(data_join, by = c(name = "..gd_name"))
+      })
+
       if ("label" %in% names(dgeo)) {
         dgeo <- dgeo |>
           mutate(label = ifelse(is.na(label), name, label) |>
