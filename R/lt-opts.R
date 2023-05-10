@@ -76,9 +76,20 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   basic_map <- list(map_color = opts$map$map_color, #%||% opts$theme$na_color,
                     opacity = opts$map$map_opacity,
                     fill = opts$map$map_fill %||% TRUE,
-                    fill_opacity = opts$map$map_fill_opacity %||% 0.2,
-                    color = opts$theme$border_color,
-                    weight = opts$theme$border_weight)
+                    fill_opacity = opts$map$map_fill_opacity %||% 0.8,
+                    border_color = opts$theme$border_color,
+                    weight = opts$theme$border_weight,
+                    map_extra_layer = opts$map$map_extra_layer)
+  if (opts$map$map_extra_layer) {
+    extra_layer_opts <- list(
+      map_name_extra = opts$map$map_name_extra,
+      map_extra_weight = opts$map$map_extra_weight,
+      map_extra_opacity = opts$map$map_extra_opacity,
+      map_extra_fillColor = opts$map$map_extra_fillColor,
+      map_extra_color = opts$map$map_extra_color
+    )
+    basic_map <- modifyList(basic_map, extra_layer_opts)
+  }
 
   general_opts <- list(layer_id = opts$map$map_layer,
                        group = opts$map$map_group,
@@ -91,18 +102,13 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
 
   if (viz == "choropleth") {
     choropleth_opts <- list(
-      map_color = opts$map$map_color, #%||% opts$theme$na_color,
-      color = opts$theme$border_color,
-      weight = opts$theme$border_weight,
-      opacity = opts$map$map_opacity,
-      fill = opts$map$map_fill %||% TRUE,
-      fill_opacity = opts$map$map_fill_opacity %||% 0.8,
+      map_color = opts$map$map_color,
       dashArray = opts$map$map_dash,
       smooth_factor = opts$map$map_smooth %||% 1,
       no_clip = opts$map$map_noclip %||% FALSE,
       highlight_options = opts$map$map_highlight
     )
-    general_opts <- c(general_opts, choropleth_opts)
+    general_opts <- c(general_opts, choropleth_opts, basic_map)
   }
   if (viz == "circles") {
     circle_opts <- list(
