@@ -4,12 +4,15 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   plot_type <- viz
   palette_colors <- opts$theme$palette_colors %||% opts$theme$palette_colors_sequential
 
+  print(palette_colors)
+
   titles_opts <- list(
     title = opts$titles$title,
     subtitle = opts$titles$subtitle,
     caption = opts$titles$caption,
     caption_show = !is.null(opts$titles$caption)
   )
+
   tiles_opts <- list(
     map_tiles = opts$theme$map_tiles,
     map_provider_tile = opts$theme$map_provider_tile,
@@ -43,6 +46,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                       n_bins = opts$map$map_bins,
                       pretty = opts$map$map_bins_pretty
   )
+
   legend_opts <- list(legend_show = opts$theme$legend_show,
                       legend_discrete = opts$map$map_legend_discrete,
                       legend_position = opts$map$map_legend_position %||% "bottomleft",
@@ -71,7 +75,6 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                     color_by = opts$prep$color_by,
                     filter = opts$map$filter_region
   )
-
 
   basic_map <- list(map_color = opts$map$map_color, #%||% opts$theme$na_color,
                     opacity = opts$map$map_opacity,
@@ -102,7 +105,6 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
 
   if (viz == "choropleth") {
     choropleth_opts <- list(
-      map_color = opts$map$map_color,
       dashArray = opts$map$map_dash,
       smooth_factor = opts$map$map_smooth %||% 1,
       no_clip = opts$map$map_noclip %||% FALSE,

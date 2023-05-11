@@ -19,6 +19,7 @@ lt_hexmap <- function(data = NULL,
                        var_glt = var_glt)
 
   opts <- plot_opts(viz = "hexmap", frType = frType, ...)
+
   opts$data_opts$data_rename <- var_coor
   data_geo <- data_map_draw(data = data,
                             dic = dic,
