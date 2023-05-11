@@ -4,8 +4,6 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   plot_type <- viz
   palette_colors <- opts$theme$palette_colors %||% opts$theme$palette_colors_sequential
 
-  print(palette_colors)
-
   titles_opts <- list(
     title = opts$titles$title,
     subtitle = opts$titles$subtitle,
