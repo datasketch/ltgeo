@@ -81,13 +81,12 @@ ltg_circles <- function(map, opts) {
 
 #' @keywords internal
 ltg_hexmap <- function(map, opts) {
-print(opts$basic_choropleth)
+
   if (opts$map_basic) {
     map <- map |>
       ltg_choropleth(opts$basic_choropleth)
   }
-  print(map)
-print(opts$colors)
+
   tryCatch({
     leaflet.extras2::addHexbin(
       data = opts$extra_data %||% getMapData(map),
