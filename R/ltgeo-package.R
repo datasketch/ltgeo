@@ -6,6 +6,8 @@
 geodato::available_maps
 
 ## usethis namespace: start
-#' @importFrom dstools %||%
+#' @import dsopts
+#' @import leaflet
+#' @importFrom dstools %||% is.empty
 ## usethis namespace: end
 NULL

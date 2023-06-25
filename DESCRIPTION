@@ -11,13 +11,14 @@ RoxygenNote: 7.2.3
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends:
+    R (>= 4.2),
+    vctrs
 Imports:
     mapproj,
-    dsvizopts,
-    homodatum,
-    geodato,
-    dstools,
+    dsopts,
+    hdtable,
     sf,
     htmltools,
     dsdataprep,
-    dplyr (>= 1.0.99)
+    dplyr

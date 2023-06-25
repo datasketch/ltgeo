@@ -11,51 +11,20 @@
 #' gg_choropleth_GcdNum(sample_data("Gcd-Num", nrow = 10))
 lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
                           filter = NULL, ...){
-
-
   if(is.null(map_name))
     stop("No map name provided, see available_maps()")
 
-  col <- geodato::parse_col(data, var)
+  opts <- dsopts_merge(...)
 
-  opts <- dsvizopts::merge_dsviz_options(...)
-  #opts <- dsvizopts::merge_dsviz_options()
+  # opts <- dsopts_merge(opts)
+  #opts <- dsopts::dsopts_merge()
 
-  data$..var <- data[[col]]
+  dd <- data
 
+  l <- prep_geo(dd, map_name, var = var, opts)
+  dgeo <- l$dgeo
+  opts <- l$opts
 
-
-
-  d <- geodato::gd_match(data, map_name)
-  tj <- geodato::gd_tj(map_name)
-
-  if(!is.null(data)){
-    dgeo <- tj |>
-      dplyr::left_join(d, by = c(id = "..gd_id", name = "..gd_name"))
-  } else{
-    dgeo <- d
-  }
-
-  # Calculate color variable
-
-  if(is.numeric(dgeo$..var)){
-    palette <- opts$theme$palette_colors_sequential
-  }else{
-    palette <- opts$theme$palette_colors_categorical
-  }
-  dgeo$..color <- paletero::paletero(dgeo$..var,
-                                     palette = palette,
-                                     na.color = opts$theme$na_color)
-
-  # Calculate tooltip
-  vars <- names(data)[!grepl("^\\.\\.|geometry", names(data))]
-  tooltip <- opts$chart$tooltip %||% NULL
-  dd <- sf::st_drop_geometry(dgeo) |>
-    select(name, any_of(vars))
-  tooltip <- dsdataprep::prep_tooltip(data = dd, tooltip = tooltip,
-                           na_row_default_column = "name")
-
-  dgeo$..labels <- map(tooltip, htmltools::HTML)
 
   # Filter regions
   if(!is.null(filter)){
@@ -69,25 +38,30 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
 
 
   lf_options <- leaflet::leafletOptions(
-    zoomControl = opts$map_zoom,
-    minZoom = opts$min_zoom,
-    maxZoom = 18
+    zoomControl = opts$zoom_show
+    # minZoom = opts$zoom_min,
+    # maxZoom = opts$zoom_max
   )
 
   lt <- leaflet::leaflet(dgeo,
-                         option = lf_options) |>
-    leaflet::addPolygons(weight = opts$theme$border_weight,
-                         label = ~ ..labels,
-                         color =  opts$theme$border_color,
-                         fillColor = ~ ..color,
-                         fillOpacity = opts$theme$topo_fill_opacity,
-                         opacity = 1)
-
-
-  # Add legend
-
-  if (opts$theme$legend_show) {
-    lt <- lt |> lt_legend(dgeo, opts)
+                         option = lf_options)
+  if(!opts$map_popup){
+    lt <- lt |> leaflet::addPolygons(weight = opts$border_width,
+                                     stroke = TRUE,
+                                     label = ~ ..labels,
+                                     color =  opts$border_color,
+                                     fillColor = ~ ..color,
+                                     fillOpacity = opts$opacity,
+                                     opacity = 1)
+  } else{
+    lt <- lt |> leaflet::addPolygons(weight = opts$border_width,
+                                     stroke = TRUE,
+                                     #label = ~ ..labels,
+                                     color =  opts$border_color,
+                                     fillColor = ~ ..color,
+                                     fillOpacity = opts$opacity,
+                                     opacity = 1,
+                                     popup = ~ ..popup)
   }
 
 
@@ -98,6 +72,11 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
   #lt_background(opts$theme)
   lt <- lt |>
     lt_background(opts)
+
+  # Add legend
+  if (opts$legend_show) {
+    lt <- lt |> lt_legend(opts, dgeo)
+  }
 
   #lflt_graticule(l$graticule) |>
 
