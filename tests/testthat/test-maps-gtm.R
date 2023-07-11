@@ -28,10 +28,9 @@ test_that("multiplication works", {
 
   var <- "categoria"
   lt_choropleth(data, map_name = map_name, var = var,
-                title = "Hello world", title_color = "#AB9699")
+                title = "Hello world", title_color = "#AB9699", color_palette_type = "categorical")
 
 
-  ###
 
   library(tidyverse)
 

@@ -3,7 +3,6 @@
 export(available_maps)
 export(lt_background)
 export(lt_choropleth)
-export(lt_legend)
 import(dsopts)
 import(leaflet)
 importFrom(dstools,"%||%")

@@ -69,14 +69,19 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
   lt <- lt |>
     lt_titles(opts)
 
-  #lt_background(opts$theme)
+ opts_tiles <- list(
+   map_tiles = if (opts$map_tiles == "NA") { NULL } else { opts$map_tiles },
+   map_provider_tile = opts$map_provider_tile,
+   background_color = opts$background_color,
+   map_tiles_esri = opts$map_tiles_esri
+ )
   lt <- lt |>
-    lt_background(opts)
+    lt_background(opts_tiles = opts_tiles)
 
   # Add legend
-  if (opts$legend_show) {
-    lt <- lt |> lt_legend(opts, dgeo)
-  }
+  # if (opts$legend_show) {
+  #   lt <- lt |> lt_legend(opts, dgeo)
+  # }
 
   #lflt_graticule(l$graticule) |>
 
