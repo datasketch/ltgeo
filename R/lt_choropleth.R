@@ -70,6 +70,20 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
                                      popup = ~ ..popup)
   }
 
+  map_name_layers <- if (opts$map_name_layers == "NA") { NULL } else { opts$map_name_layers }
+  if (!is.null(map_name_layers)) {
+    topoData <- geojsonio::topojson_json(geodato::gd_tj(map_name_layers))
+    lt <- lt |>
+      leaflet::addTopoJSON(
+        topojson = topoData,
+        weight = 1,#opts$map_name_layers_params$weight,
+        opacity = 1,#opts$map_name_layers_params$opacity,
+        fill = F,
+        #fillColor = "transparent",
+        color = opts$map_name_layers_params$color
+        )
+  }
+
 
   # Add titles
   lt <- lt |>

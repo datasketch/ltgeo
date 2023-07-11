@@ -1,6 +1,16 @@
 test_that("multiplication works", {
 
   library(tidyverse)
+
+  data <- data.frame(mcpio = c("Dagua", "El Encanto", "La Chorrera", "Abejorral"),
+                     valor = runif(4, 100, 500))
+
+  lt_choropleth(data, var = "valor",
+                map_name = "col_municipalities",
+                map_name_layers = "col_departments",
+                map_name_layers_params = list(color = "#000000"))
+
+
   df <- read_csv("tmp/boyaca-especies.csv")
 
   map_name <- "col_municipalities_boyaca"
