@@ -2,16 +2,16 @@
 
 lt_titles <- function(map, opts) {
 
-  text_family <- opts$theme$text_family
-  title_color <- opts$theme$title_color
-  title_size <- opts$theme$title_size
-  title <- opts$titles$title %||% ""
-  subtitle_size <- opts$theme$subtitle_size
-  subtitle_color <- opts$theme$subtitle_color
-  subtitle <- opts$titles$subtitle %||% ""
-  caption_color <- opts$theme$caption_color
-  caption_size <- opts$theme$caption_size
-  caption <- opts$titles$caption %||% ""
+  text_family <- opts$text_family
+  title_color <- opts$title_color
+  title_size <- opts$title_size
+  title <- ifelse(opts$title == "NA", "", opts$title)
+  subtitle_size <- opts$subtitle_size
+  subtitle_color <- opts$subtitle_color
+  subtitle <- ifelse(opts$subtitle == "NA", "", opts$subtitle)
+  caption_color <- opts$caption_color
+  caption_size <- opts$caption_size
+  caption <- ifelse(opts$caption == "NA", "", opts$caption)
 
   css <- "
       .leaflet-map-pane {
@@ -53,9 +53,9 @@ lt_titles <- function(map, opts) {
   caption <- glue::glue("<p style='margin-bottom:0px;font-family:{text_family};
              color:{caption_color};font-size:{caption_size}px;'>{caption}</p>")
 
-  # legend_title <- HTML(paste0("<p style='font-family:", opts$theme$text_family,
-  #                             ';color:', opts$theme$legend_color,
-  #                             ';font-size:', opts$theme$legend_size,"px;'>",
+  # legend_title <- HTML(paste0("<p style='font-family:", opts$text_family,
+  #                             ';color:', opts$legend_color,
+  #                             ';font-size:', opts$legend_size,"px;'>",
   #                             opts$title$legend_title %||% "","</p>"))
 
   map |>

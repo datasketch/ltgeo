@@ -8,7 +8,9 @@ test_that("multiplication works", {
   lt_choropleth(data, var = "valor",
                 map_name = "col_municipalities",
                 map_name_layers = "col_departments",
-                map_name_layers_params = list(color = "#000000"))
+                map_name_layers_params = list(color = "#000000"),
+                caption = "esto son los pie de pagina",
+                title = "esto es un titulo")
 
 
   df <- read_csv("tmp/boyaca-especies.csv")
