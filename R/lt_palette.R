@@ -1,37 +1,31 @@
 
+#' @keywords internal
+lt_palette <- function(opts) {
 
-lt_palette <- function(dgeo, opts){
+  color_mapping <- NULL
 
+  l <- list(
+    palette = opts$palette,
+    domain = opts$domain,
+    na.color = opts$na_color
+  )
 
-  if(is.numeric(dgeo$..var)){
-    palette <- opts$theme$palette_colors_sequential
-  }else{
-    palette <- opts$theme$palette_colors_categorical
+  if (is.null(l$domain)) return()
+  if (all(is.na(l$domain))) return()
+
+  if (opts$color_scale %in% c("categorical")) {
+    color_mapping <- "colorFactor"
+  } else if (opts$color_scale == "Quantile") {
+    color_mapping <- "colorQuantile"
+    l <- modifyList(l, list(n = opts$n_quantile))
+  } else if (opts$color_scale == 'Bins') {
+    color_mapping <- "colorBin"
+    l <- modifyList(l, list(bins = opts$n_bins,
+                            pretty = opts$pretty))
+  } else {
+    color_mapping <- "colorNumeric"
   }
-  domain <- unique(dgeo$..var)
-  domain <- domain[!is.na(domain)]
-  na.color <- opts$theme$na_color
 
-  if(is.numeric(dgeo$..var)){
-    # pal <- leaflet::colorNumeric(palette, domain = dgeo$..var,
-    #                              na.color = opts$theme$na_color)
-    pal <- "colorNumeric"
-
-  }else{
-    # pal <- leaflet::colorFactor(palette, domain = dgeo$..var,
-    #                             na.color = opts$theme$na_color)
-    pal <- "colorFactor"
-  }
-
-  # Add leaflet namespace
-  pal <- paste0("leaflet::",pal)
-
-  do.call(getfun(pal),
-          list(
-            palette = palette[1:length(domain)],
-            domain = domain,
-            na.color = na.color
-          ))
+  color_mapping <- paste0("leaflet::", color_mapping)
+  do.call(dstools::getfun(color_mapping), l)
 }
-
-

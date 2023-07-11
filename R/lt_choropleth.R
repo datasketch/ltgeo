@@ -24,7 +24,10 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
   l <- prep_geo(dd, map_name, var = var, opts)
   dgeo <- l$dgeo
   opts <- l$opts
-
+  opts$legend_discrete <- FALSE
+  if (is.character(dd[[var]])) {
+    opts$legend_discrete <- TRUE
+  }
 
   # Filter regions
   if(!is.null(filter)){
@@ -79,9 +82,17 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
     lt_background(opts_tiles = opts_tiles)
 
   # Add legend
-  # if (opts$legend_show) {
-  #   lt <- lt |> lt_legend(opts, dgeo)
-  # }
+  if (opts$legend_show) {
+    color_scale <- ifelse(is.na(opts$color_palette_type), "sequential", opts$color_palette_type)
+    opts_lg <- list(
+      domain = unique(setdiff(dgeo$..var, NA)),
+      palette = opts[[paste0("color_palette_", color_scale)]],
+      na_color = opts$na_color,
+      color_scale = color_scale
+    )
+    opts$pal <- lt_palette(opts_lg)
+    lt <- lt |> lt_legend(opts)
+  }
 
   #lflt_graticule(l$graticule) |>
 
