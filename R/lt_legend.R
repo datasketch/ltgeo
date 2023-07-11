@@ -68,11 +68,11 @@ lt_legend <- function(map, opts) {
     opts_discrete <- list(
       pal = opts$pal,
       legend_labels = opts$legend_labels,
-      legend_sizes = opts$legend_sizes,
+      legend_sizes = opts$legend_sizes %||% 15,
       legend_title = opts$legend_title,
       na_label = opts$na_label,
-      legend_position = opts$legend_position,
-      legend_opacity = opts$legend_opacity
+      #legend_position = opts$legend_position,
+      legend_opacity = 0.8
     )
 
     lt_discrete_legend(map, opts_discrete)

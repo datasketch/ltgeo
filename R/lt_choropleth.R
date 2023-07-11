@@ -24,13 +24,10 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
   l <- prep_geo(dd, map_name, var = var, opts)
   dgeo <- l$dgeo
   opts <- l$opts
-  opts$legend_discrete <- FALSE
-  if (is.character(dd[[var]])) {
-    opts$legend_discrete <- TRUE
-  }
+
 
   # Filter regions
-  if(!is.null(filter)){
+  if(!is.null(filter)) {
     code_or_name <- geodato:::is_code_or_name(filter, map_name)
     if(code_or_name == "name"){
       filter <- tibble::tibble(filter = filter) |>
@@ -39,6 +36,12 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
     dgeo <- dgeo |> filter(id %in% filter)
   }
 
+  opts$legend_discrete <- FALSE
+  if (is.character(dd[[var]])) {
+    opts$legend_discrete <- TRUE
+    cat_order <- if (all(is.na(opts$legend_cat_order))) { NULL } else { opts$legend_cat_order }
+    opts$legend_labels <- cat_order %||% unique(dgeo[[var]])
+  }
 
   lf_options <- leaflet::leafletOptions(
     zoomControl = opts$zoom_show
@@ -72,25 +75,32 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
   lt <- lt |>
     lt_titles(opts)
 
- opts_tiles <- list(
-   map_tiles = if (opts$map_tiles == "NA") { NULL } else { opts$map_tiles },
-   map_provider_tile = opts$map_provider_tile,
-   background_color = opts$background_color,
-   map_tiles_esri = opts$map_tiles_esri
- )
+  opts_tiles <- list(
+    map_tiles = if (opts$map_tiles == "NA") { NULL } else { opts$map_tiles },
+    map_provider_tile = opts$map_provider_tile,
+    background_color = opts$background_color,
+    map_tiles_esri = opts$map_tiles_esri
+  )
   lt <- lt |>
     lt_background(opts_tiles = opts_tiles)
 
   # Add legend
   if (opts$legend_show) {
     color_scale <- ifelse(is.na(opts$color_palette_type), "sequential", opts$color_palette_type)
-    opts_lg <- list(
-      domain = unique(setdiff(dgeo$..var, NA)),
-      palette = opts[[paste0("color_palette_", color_scale)]],
-      na_color = opts$na_color,
-      color_scale = color_scale
-    )
-    opts$pal <- lt_palette(opts_lg)
+    if (color_scale == "sequential") {
+      opts_lg <- list(
+        domain = unique(setdiff(dgeo$..var, NA)),
+        palette = opts[[paste0("color_palette_", color_scale)]],
+        na_color = opts$na_color,
+        color_scale = color_scale
+      )
+      opts$pal <- lt_palette(opts_lg)
+    } else {
+      dgeo[[var]] <- factor(dgeo[[var]], levels = opts$legend_labels)
+      dgeo <- dgeo[order(dgeo[[var]]), ]
+      opts$pal <- unique(dgeo$..color)
+    }
+
     lt <- lt |> lt_legend(opts)
   }
 
