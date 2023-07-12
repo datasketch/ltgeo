@@ -13,6 +13,7 @@ Suggests:
 Config/testthat/edition: 3
 Depends:
     leaflet,
+    leaflet.extras,
     geodato,
     dplyr,
     R (>= 3.0.0)
