@@ -31,7 +31,7 @@ test_that("multiplication works", {
                 title = "Hello world",
                 title_color = "#AB9699",
                 color_palette_type = "categorical",
-                legend_cat_order = c("menor", "mayor", NA))
+                legend_cat_order = c("menor", NA))
 
 
 

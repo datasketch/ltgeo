@@ -41,7 +41,8 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
     opts$legend_discrete <- TRUE
     cat_order <- if (all(is.na(opts$legend_cat_order))) { NULL } else { opts$legend_cat_order }
     opts$legend_labels <- cat_order %||% unique(dgeo[[var]])
-    print(opts$legend_labels)
+    cat_extra <- setdiff(unique(dgeo[[var]]), opts$legend_labels)
+    opts$legend_labels <- c(intersect(opts$legend_labels, unique(dgeo[[var]])), cat_extra)
   }
 
   lf_options <- leaflet::leafletOptions(
