@@ -41,16 +41,19 @@ lt_choropleth <- function(data = NULL, map_name = NULL, var = NULL,
     opts$legend_discrete <- TRUE
     cat_order <- if (all(is.na(opts$legend_cat_order))) { NULL } else { opts$legend_cat_order }
     opts$legend_labels <- cat_order %||% unique(dgeo[[var]])
+    print(opts$legend_labels)
   }
 
   lf_options <- leaflet::leafletOptions(
-    zoomControl = opts$zoom_show
-    # minZoom = opts$zoom_min,
-    # maxZoom = opts$zoom_max
+    zoomSnap = opts$map_zoom_snap,
+    zoomDelta = opts$map_zoom_delta,
+    zoomControl = opts$zoom_show,
+    minZoom = opts$zoom_min,
+    maxZoom = if (is.na(opts$zoom_max)) { 18 } else {opts$zoom_max}
   )
 
   lt <- leaflet::leaflet(dgeo,
-                         option = lf_options)
+                         options = lf_options)
   if(!opts$map_popup){
     lt <- lt |> leaflet::addPolygons(weight = opts$border_width,
                                      stroke = TRUE,

@@ -22,7 +22,10 @@ prep_geo <- function(dd, map_name, var = NULL, opts){
 
   # Guess type of column to color
 
-  if (is.null(dgeo$..color)) {
+  if ("color" %in% names(dgeo)) {
+    dgeo$..color <- dgeo$color
+    dgeo$..color[is.na(dgeo$..color)] <- opts$na_color
+  } else {
     var_color <- opts$color_by %||% var
     v_color <- dd[[var_color]]
 

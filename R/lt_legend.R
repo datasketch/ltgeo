@@ -71,7 +71,7 @@ lt_legend <- function(map, opts) {
       legend_sizes = opts$legend_sizes %||% 15,
       legend_title = opts$legend_title,
       na_label = opts$na_label,
-      #legend_position = opts$legend_position,
+      legend_position = "bottomleft",
       legend_opacity = 0.8
     )
 
@@ -79,7 +79,7 @@ lt_legend <- function(map, opts) {
   } else {
     opts_legend <- list(
       map = map,
-      #position = opts$legend_position,
+      position = "bottomleft",
       pal = opts$pal,
       values = ~..var,
       na.label = opts$na_label,

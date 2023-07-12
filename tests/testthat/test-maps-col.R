@@ -10,7 +10,11 @@ test_that("multiplication works", {
                 map_name_layers = "col_departments",
                 map_name_layers_params = list(color = "#000000"),
                 caption = "esto son los pie de pagina",
-                title = "esto es un titulo")
+                title = "esto es un titulo",
+                border_color = "#3a3a3a",
+                border_width = 0.3,
+                na_color = "#ffffff",
+                na_label = "NA")
 
 
   df <- read_csv("tmp/boyaca-especies.csv")

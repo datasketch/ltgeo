@@ -28,7 +28,10 @@ test_that("multiplication works", {
 
   var <- "categoria"
   lt_choropleth(data, map_name = map_name, var = var,
-                title = "Hello world", title_color = "#AB9699", color_palette_type = "categorical")
+                title = "Hello world",
+                title_color = "#AB9699",
+                color_palette_type = "categorical",
+                legend_cat_order = c("menor", "mayor", NA))
 
 
 
