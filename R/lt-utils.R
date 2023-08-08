@@ -110,3 +110,18 @@ ltg_hexmap <- function(map, opts) {
     map
   })
 }
+
+lt_titles <- function(map, titles) {
+
+  map %>%
+    leaflet::addControl(titles$caption,
+                        position = "bottomleft",
+                        className="map-caption") %>%
+    leaflet::addControl(titles$title,
+                        position = "topleft",
+                        className="map-title") %>%
+    leaflet::addControl(titles$subtitle,
+                        position = "topleft",
+                        className="map-subtitle")
+
+}
