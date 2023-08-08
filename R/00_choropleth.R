@@ -35,8 +35,7 @@ lt_choropleth <- function(data = NULL,
                   opts_branding = opts$branding_opts) |>
     ltg_choropleth(opts = c(opts$colors_opts,
                             opts$general_opts)) |>
-    lt_legend(opts$legend_opts) |>
-    lt_titles(opts$titles_opts)
+    lt_legend(opts$legend_opts)
 
 }
 
