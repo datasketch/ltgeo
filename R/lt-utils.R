@@ -3,7 +3,7 @@ ltg_choropleth <- function(map, opts) {
 
   lf <-  map |>
     addPolygons(
-      layerId = opts$layer_id,
+      layerId = ~name,
       group = opts$group,
       stroke = opts$stroke,
       color = opts$border_color,
