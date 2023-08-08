@@ -60,6 +60,7 @@ lt_discrete_legend <- function(map, opts){
 #' @export
 lt_legend <- function(map, opts) {
 
+  if (!opts$legend_show) return(map)
   if (is.null(opts$pal)) return(map)
 
   if (opts$legend_discrete) {
