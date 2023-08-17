@@ -19,6 +19,7 @@ lt_hexmap <- function(data = NULL,
                        var_glt = var_glt)
 
   opts <- plot_opts(viz = "hexmap", frType = frType, ...)
+
   opts$data_opts$data_rename <- var_coor
   data_geo <- data_map_draw(data = data,
                             dic = dic,
@@ -33,11 +34,12 @@ lt_hexmap <- function(data = NULL,
     data_map <- data_geo$map_data$dgeo
   }
 
-  leaflet(data_map) |>
+  leaflet(data_map,
+          options = do.call("leafletOptions", opts$zoom_opts)) |>
     lt_background(opts_tiles = opts$tiles_opts,
                   opts_branding = opts$branding_opts) |>
-    ltg_hexmap(opts = opts$general_opts) #|>
-  #lt_legend(opts$legend_opts)
+    ltg_hexmap(opts = opts$general_opts) |>
+    lt_legend(opts$legend_opts)
 
 }
 

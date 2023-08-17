@@ -10,6 +10,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
     caption = opts$titles$caption,
     caption_show = !is.null(opts$titles$caption)
   )
+
   tiles_opts <- list(
     map_tiles = opts$theme$map_tiles,
     map_provider_tile = opts$theme$map_provider_tile,
@@ -17,6 +18,13 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
     map_tiles_esri = opts$theme$map_tiles_esri,
     map_extra_layout = opts$theme$map_extra_layout,
     map_name_layout = opts$theme$map_name_layout
+  )
+  zoom_opts <- list(
+    zoomSnap = opts$map$map_zoom_snap,
+    zoomDelta = opts$map$map_zoom_delta,
+    zoomControl = opts$theme$map_zoom,
+    minZoom = opts$map$map_min_zoom,
+    maxZoom = opts$map$map_max_zoom
   )
   branding_opts = list(
     logo = opts$theme$logo,
@@ -36,8 +44,10 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                       n_bins = opts$map$map_bins,
                       pretty = opts$map$map_bins_pretty
   )
+
   legend_opts <- list(legend_show = opts$theme$legend_show,
-                      legend_position = opts$theme$map_legend_position %||% "bottomleft",
+                      legend_discrete = opts$map$map_legend_discrete,
+                      legend_position = opts$map$map_legend_position %||% "bottomleft",
                       na_label = opts$prep$na_label,
                       legend_bins = opts$map$map_bins,
                       legend_opacity = opts$map$map_opacity,
@@ -64,13 +74,23 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
                     filter = opts$map$filter_region
   )
 
-
-  basic_map <- list(map_color = opts$map$map_color,
+  basic_map <- list(map_color = opts$map$map_color, #%||% opts$theme$na_color,
                     opacity = opts$map$map_opacity,
                     fill = opts$map$map_fill %||% TRUE,
-                    fill_opacity = opts$map$map_fill_opacity %||% 0.2,
-                    color = opts$theme$border_color,
-                    weight = opts$theme$border_weight)
+                    fill_opacity = opts$map$map_fill_opacity %||% 0.8,
+                    border_color = opts$theme$border_color,
+                    weight = opts$theme$border_weight,
+                    map_extra_layer = opts$map$map_extra_layer)
+  if (opts$map$map_extra_layer) {
+    extra_layer_opts <- list(
+      map_name_extra = opts$map$map_name_extra,
+      map_extra_weight = opts$map$map_extra_weight,
+      map_extra_opacity = opts$map$map_extra_opacity,
+      map_extra_fillColor = opts$map$map_extra_fillColor,
+      map_extra_color = opts$map$map_extra_color
+    )
+    basic_map <- modifyList(basic_map, extra_layer_opts)
+  }
 
   general_opts <- list(layer_id = opts$map$map_layer,
                        group = opts$map$map_group,
@@ -83,18 +103,12 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
 
   if (viz == "choropleth") {
     choropleth_opts <- list(
-      map_color = opts$map$map_color,
-      color = opts$theme$border_color,
-      weight = opts$theme$border_weight,
-      opacity = opts$map$map_opacity,
-      fill = opts$map$map_fill %||% TRUE,
-      fill_opacity = opts$map$map_fill_opacity %||% 0.8,
       dashArray = opts$map$map_dash,
       smooth_factor = opts$map$map_smooth %||% 1,
       no_clip = opts$map$map_noclip %||% FALSE,
       highlight_options = opts$map$map_highlight
     )
-    general_opts <- c(general_opts, choropleth_opts)
+    general_opts <- c(general_opts, choropleth_opts, basic_map)
   }
   if (viz == "circles") {
     circle_opts <- list(
@@ -122,6 +136,8 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   }
 
   if (viz == "hexmap") {
+    legend_opts$legend_sizes <- opts$theme$legend_size
+    legend_opts$pal <- palette_colors
     hexmap_opts <- list(
       basic_choropleth = basic_map,
       map_basic = opts$map$map_basic,
@@ -135,6 +151,7 @@ plot_opts <- function(viz = NULL, frType = NULL, ...) {
   }
 
   list(titles_opts = titles_opts,
+       zoom_opts = zoom_opts,
        data_opts = data_opts,
        general_opts = general_opts,
        colors_opts = colors_opts,

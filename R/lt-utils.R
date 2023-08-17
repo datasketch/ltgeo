@@ -1,12 +1,12 @@
 #' @keywords internal
 ltg_choropleth <- function(map, opts) {
 
-  map |>
+  lf <-  map |>
     addPolygons(
-      layerId = opts$layer_id,
+      layerId = ~name,
       group = opts$group,
       stroke = opts$stroke,
-      color = opts$color,
+      color = opts$border_color,
       weight = opts$weight,
       opacity = opts$opacity,
       fill = opts$fill,
@@ -21,6 +21,21 @@ ltg_choropleth <- function(map, opts) {
       labelOptions = opts$label_options,
       highlightOptions = opts$highlight_options
     )
+
+
+  if (opts$map_extra_layer) {
+    topoData <- topojson_json(gd_tj(opts$map_name_extra))
+    lf <- lf |>
+      leaflet::addTopoJSON(
+        topojson = topoData,
+        weight = opts$map_extra_weight,
+        opacity = opts$map_extra_opacity,
+        fill = F,
+        fillColor = opts$map_extra_fillColor,
+        color = opts$map_extra_color)
+  }
+  lf
+
 }
 
 #' @keywords internal
@@ -94,4 +109,19 @@ ltg_hexmap <- function(map, opts) {
   }, error = function(e) {
     map
   })
+}
+
+lt_titles <- function(map, titles) {
+
+  map %>%
+    leaflet::addControl(titles$caption,
+                        position = "bottomleft",
+                        className="map-caption") %>%
+    leaflet::addControl(titles$title,
+                        position = "topleft",
+                        className="map-title") %>%
+    leaflet::addControl(titles$subtitle,
+                        position = "topleft",
+                        className="map-subtitle")
+
 }

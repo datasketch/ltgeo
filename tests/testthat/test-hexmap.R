@@ -5,6 +5,8 @@ test_that("Hexmap function", {
             var_gln = "long",
             var_glt = "lat",
             map_hex_opacity = 1,
+            map_legend_discrete = TRUE,
+            legend_labels = c("mayor", "menor"),
             palette_colors = c("yellow", "red"))
 
   n <- 1000
@@ -14,6 +16,8 @@ test_that("Hexmap function", {
   lt_hexmap_GlnGlt(df,
                    map_basic = FALSE,
                    map_hex_opacity = 1,
+                   map_legend_discrete = FALSE,
+                   legend_labels = c("mayor", "menor"),
                    palette_colors = c("yellow", "red"))
 
 })
