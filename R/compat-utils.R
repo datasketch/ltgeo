@@ -84,8 +84,10 @@ data_map_draw <- function(data = NULL,
       },
       error = function(e) {
         data_join <- data |> rename(..gd_name = !!var_geo)
+        data_join$..gd_name <- stringi::stri_trans_general(tolower(data_join$..gd_name), "Latin-ASCII")
+        tj$..gd_name <- stringi::stri_trans_general(tolower(tj$name), "Latin-ASCII")
         tj |>
-          left_join(data_join, by = c(name = "..gd_name"))
+          left_join(data_join)
       })
 
       if ("label" %in% names(dgeo)) {
