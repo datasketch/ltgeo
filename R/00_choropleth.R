@@ -30,7 +30,7 @@ lt_choropleth <- function(data = NULL,
   opts$legend_opts$pal <- pal
 
   leaflet::leaflet(data_geo$map_data,
-          options = do.call("leafletOptions", opts$zoom_opts)) |>
+          options =  do.call(eval(parse(text="leaflet::leafletOptions")), opts$zoom_opts)) |>
     lt_background(opts_tiles = opts$tiles_opts,
                   opts_branding = opts$branding_opts) |>
     ltg_choropleth(opts = c(opts$colors_opts,

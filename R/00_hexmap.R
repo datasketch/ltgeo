@@ -35,7 +35,7 @@ lt_hexmap <- function(data = NULL,
   }
 
   leaflet::leaflet(data_map,
-          options = do.call("leafletOptions", opts$zoom_opts)) |>
+          options =  do.call(eval(parse(text="leaflet::leafletOptions")), opts$zoom_opts)) |>
     lt_background(opts_tiles = opts$tiles_opts,
                   opts_branding = opts$branding_opts) |>
     ltg_hexmap(opts = opts$general_opts) |>
