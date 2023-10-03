@@ -2,7 +2,7 @@
 ltg_choropleth <- function(map, opts) {
 
   lf <-  map |>
-    addPolygons(
+    leaflet::addPolygons(
       layerId = ~name,
       group = opts$group,
       stroke = opts$stroke,
@@ -52,7 +52,7 @@ ltg_circles <- function(map, opts) {
   }
   tryCatch({
     map |>
-      addCircleMarkers(
+      leaflet::addCircleMarkers(
         data = opts$extra_data %||% getMapData(map),
         lng = ~lon,
         lat = ~lat,
