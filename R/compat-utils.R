@@ -44,7 +44,7 @@ data_map_draw <- function(data = NULL,
   map_name <- opts$map_name
   if(is.null(map_name)) stop("No map name provided, see available_maps()")
 
-  tj <- gd_tj(map_name)
+  tj <- geodato::gd_tj(map_name)
 
   if(!is.null(data)){
 
@@ -78,7 +78,7 @@ data_map_draw <- function(data = NULL,
     if (length(var_geo) == 1) {
 
       dgeo <- tryCatch({
-        data_join <- gd_match(data, map_name)
+        data_join <- geodato::gd_match(data, map_name)
         tj |>
           left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
       },
