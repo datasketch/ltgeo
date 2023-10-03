@@ -34,7 +34,7 @@ lt_hexmap <- function(data = NULL,
     data_map <- data_geo$map_data$dgeo
   }
 
-  leaflet(data_map,
+  leaflet::leaflet(data_map,
           options = do.call("leafletOptions", opts$zoom_opts)) |>
     lt_background(opts_tiles = opts$tiles_opts,
                   opts_branding = opts$branding_opts) |>

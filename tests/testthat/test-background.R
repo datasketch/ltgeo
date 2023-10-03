@@ -7,8 +7,8 @@ test_that("Background Map", {
   opts_logo <- list(
     branding_include = FALSE
   )
-  leaflet() |>
-    addTiles() |>
+  leaflet::leaflet() |>
+    leaflet::addTiles() |>
     lt_background(opts_tiles = opts,
                   opts_branding = opts_logo)
 })

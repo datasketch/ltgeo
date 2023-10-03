@@ -43,7 +43,7 @@ ltg_circles <- function(map, opts) {
 
   cluster_add <- NULL
   if (opts$cluster_add) {
-    cluster_add <- do.call("markerClusterOptions", opts$cluster_opts)
+    cluster_add <- do.call(eval(parse(text="leaflet::markerClusterOptions")), opts$cluster_opts)
   }
 
   if (opts$map_basic) {
