@@ -80,14 +80,14 @@ data_map_draw <- function(data = NULL,
       dgeo <- tryCatch({
         data_join <- geodato::gd_match(data, map_name)
         tj |>
-          left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
+          dplyr::left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
       },
       error = function(e) {
         data_join <- data |> dplyr::rename(..gd_name = !!var_geo)
         data_join$..gd_name <- stringi::stri_trans_general(tolower(data_join$..gd_name), "Latin-ASCII")
         tj$..gd_name <- stringi::stri_trans_general(tolower(tj$name), "Latin-ASCII")
         tj |>
-          left_join(data_join)
+          dplyr::left_join(data_join)
       })
 
       if ("label" %in% names(dgeo)) {
@@ -122,9 +122,9 @@ data_map_draw <- function(data = NULL,
     code_or_name <- is_code_or_name(opts$filter, map_name)
     if(opts$code_or_name == "name"){
       filter <- tibble::tibble(filter = opts$filter) |>
-        gd_match(map_name) |> pull(..gd_id)
+        gd_match(map_name) |> dplyr::pull(..gd_id)
     }
-    dgeo <- dgeo |> filter(id %in% filter)
+    dgeo <- dgeo |> dplyr::filter(id %in% filter)
   }
 
   list(
