@@ -68,7 +68,7 @@ data_map_draw <- function(data = NULL,
                                              format_cat = opts$format_sample_cat,
                                              format_date = opts$format_sample_dat)
     } else {
-      data <- data |> rename(label = ..labels)
+      data <- data |> dplyr::rename(label = ..labels)
     }
 
     if (!is.null(var_num)) {
@@ -83,7 +83,7 @@ data_map_draw <- function(data = NULL,
           left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
       },
       error = function(e) {
-        data_join <- data |> rename(..gd_name = !!var_geo)
+        data_join <- data |> dplyr::rename(..gd_name = !!var_geo)
         data_join$..gd_name <- stringi::stri_trans_general(tolower(data_join$..gd_name), "Latin-ASCII")
         tj$..gd_name <- stringi::stri_trans_general(tolower(tj$name), "Latin-ASCII")
         tj |>
@@ -105,8 +105,8 @@ data_map_draw <- function(data = NULL,
       if (opts$data_rename) {
         var_lon <- var_geo[1]
         var_lat <- var_geo[2]
-        data <- data |> rename(lon = {{var_lon}},
-                               lat = {{var_lat}})
+        data <- data |> dplyr::rename(lon = {{var_lon}},
+                                      lat = {{var_lat}})
       }
       dgeo <- list(dgeo = dgeo,
                    data = data)
