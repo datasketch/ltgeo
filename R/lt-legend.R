@@ -97,7 +97,7 @@ lt_legend <- function(map, opts) {
       opts_legeng$colors <- opts$extra_colors
     }
 
-    do.call("addLegend", opts_legend)
+    do.call(eval(parse(text="leaflet::addLegend")), opts_legend)
   }
 }
 
