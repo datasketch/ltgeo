@@ -24,7 +24,7 @@ ltg_choropleth <- function(map, opts) {
 
 
   if (opts$map_extra_layer) {
-    topoData <- geojsonio::topojson_json(gd_tj(opts$map_name_extra))
+    topoData <- geojsonio::topojson_json(geodato::gd_tj(opts$map_name_extra))
     lf <- lf |>
       leaflet::addTopoJSON(
         topojson = topoData,
