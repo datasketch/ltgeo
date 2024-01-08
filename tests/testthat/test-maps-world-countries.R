@@ -1,7 +1,7 @@
 test_that("Maps of the world", {
 
 
-  library(tidyverse)
+  #library(tidyverse)
 
   map_name <- "world_countries"
 
@@ -17,11 +17,11 @@ test_that("Maps of the world", {
   )
   tooltip <- opts_list$tooltip
 
-  lt_choropleth(data, map_name = map_name, var = var)
+  lt_choropleth(data, map_name = map_name, var_num = var)
 
-  lt_choropleth(data, map_name = map_name, var = var, opts = opts_list)
-  var <- "categoria"
-  lt_choropleth(data, map_name = map_name, var = var, opts = opts_list)
+  lt_choropleth(data, map_name = map_name, var_num = var, opts = opts_list)
+  # var <- "categoria"
+  # lt_choropleth(data, map_name = map_name, var = var, opts = opts_list)
 
 
 

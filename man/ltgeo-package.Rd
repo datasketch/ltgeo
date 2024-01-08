@@ -11,7 +11,7 @@ Make interactive maps with leaflet with a simplified interface.
 Make interactive maps with leaflet with a simplified interface.
 }
 \author{
-\strong{Maintainer}: Jp Marin Diaz \email{jpmarindiaz@gmail.com}
+\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 
 }
 \keyword{internal}
