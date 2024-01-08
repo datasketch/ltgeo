@@ -2,8 +2,8 @@
 ltg_choropleth <- function(map, opts) {
 
   lf <-  map |>
-    addPolygons(
-      layerId = opts$layer_id,
+    leaflet::addPolygons(
+      layerId = ~name,
       group = opts$group,
       stroke = opts$stroke,
       color = opts$border_color,
@@ -24,7 +24,7 @@ ltg_choropleth <- function(map, opts) {
 
 
   if (opts$map_extra_layer) {
-    topoData <- topojson_json(gd_tj(opts$map_name_extra))
+    topoData <- geojsonio::topojson_json(geodato::gd_tj(opts$map_name_extra))
     lf <- lf |>
       leaflet::addTopoJSON(
         topojson = topoData,
@@ -43,7 +43,7 @@ ltg_circles <- function(map, opts) {
 
   cluster_add <- NULL
   if (opts$cluster_add) {
-    cluster_add <- do.call("markerClusterOptions", opts$cluster_opts)
+    cluster_add <- do.call(eval(parse(text="leaflet::markerClusterOptions")), opts$cluster_opts)
   }
 
   if (opts$map_basic) {
@@ -52,7 +52,7 @@ ltg_circles <- function(map, opts) {
   }
   tryCatch({
     map |>
-      addCircleMarkers(
+      leaflet::addCircleMarkers(
         data = opts$extra_data %||% getMapData(map),
         lng = ~lon,
         lat = ~lat,
@@ -109,4 +109,19 @@ ltg_hexmap <- function(map, opts) {
   }, error = function(e) {
     map
   })
+}
+
+lt_titles <- function(map, titles) {
+
+  map %>%
+    leaflet::addControl(titles$caption,
+                        position = "bottomleft",
+                        className="map-caption") %>%
+    leaflet::addControl(titles$title,
+                        position = "topleft",
+                        className="map-title") %>%
+    leaflet::addControl(titles$subtitle,
+                        position = "topleft",
+                        className="map-subtitle")
+
 }

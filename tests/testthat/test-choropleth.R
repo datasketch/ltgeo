@@ -20,7 +20,7 @@ test_that("Choropleth function", {
   data <- data.frame(mcpio = c("Dagua", "El Encanto", "La Chorrera", "Abejorral"),
                      valor = runif(4, 100, 500))
 
-  lt_choropleth_GnmNum(data,  map_name = "col_municipalities")
+  lt_choropleth_GnmNum(data,  map_name = "col_municipalities", title="hola")
 
 
 

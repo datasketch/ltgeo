@@ -60,6 +60,7 @@ lt_discrete_legend <- function(map, opts){
 #' @export
 lt_legend <- function(map, opts) {
 
+  if (!opts$legend_show) return(map)
   if (is.null(opts$pal)) return(map)
 
   if (opts$legend_discrete) {
@@ -96,7 +97,7 @@ lt_legend <- function(map, opts) {
       opts_legeng$colors <- opts$extra_colors
     }
 
-    do.call("addLegend", opts_legend)
+    do.call(eval(parse(text="leaflet::addLegend")), opts_legend)
   }
 }
 

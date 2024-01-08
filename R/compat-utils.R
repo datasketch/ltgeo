@@ -44,7 +44,7 @@ data_map_draw <- function(data = NULL,
   map_name <- opts$map_name
   if(is.null(map_name)) stop("No map name provided, see available_maps()")
 
-  tj <- gd_tj(map_name)
+  tj <- geodato::gd_tj(map_name)
 
   if(!is.null(data)){
 
@@ -68,7 +68,7 @@ data_map_draw <- function(data = NULL,
                                              format_cat = opts$format_sample_cat,
                                              format_date = opts$format_sample_dat)
     } else {
-      data <- data |> rename(label = ..labels)
+      data <- data |> dplyr::rename(label = ..labels)
     }
 
     if (!is.null(var_num)) {
@@ -78,14 +78,16 @@ data_map_draw <- function(data = NULL,
     if (length(var_geo) == 1) {
 
       dgeo <- tryCatch({
-        data_join <- gd_match(data, map_name)
+        data_join <- geodato::gd_match(data, map_name)
         tj |>
-          left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
+          dplyr::left_join(data_join, by = c(id = "..gd_id", name = "..gd_name"))
       },
       error = function(e) {
-        data_join <- data |> rename(..gd_name = !!var_geo)
+        data_join <- data |> dplyr::rename(..gd_name = !!var_geo)
+        data_join$..gd_name <- stringi::stri_trans_general(tolower(data_join$..gd_name), "Latin-ASCII")
+        tj$..gd_name <- stringi::stri_trans_general(tolower(tj$name), "Latin-ASCII")
         tj |>
-          left_join(data_join, by = c(name = "..gd_name"))
+          dplyr::left_join(data_join)
       })
 
       if ("label" %in% names(dgeo)) {
@@ -103,8 +105,8 @@ data_map_draw <- function(data = NULL,
       if (opts$data_rename) {
         var_lon <- var_geo[1]
         var_lat <- var_geo[2]
-        data <- data |> rename(lon = {{var_lon}},
-                               lat = {{var_lat}})
+        data <- data |> dplyr::rename(lon = {{var_lon}},
+                                      lat = {{var_lat}})
       }
       dgeo <- list(dgeo = dgeo,
                    data = data)
@@ -120,9 +122,9 @@ data_map_draw <- function(data = NULL,
     code_or_name <- is_code_or_name(opts$filter, map_name)
     if(opts$code_or_name == "name"){
       filter <- tibble::tibble(filter = opts$filter) |>
-        gd_match(map_name) |> pull(..gd_id)
+        gd_match(map_name) |> dplyr::pull(..gd_id)
     }
-    dgeo <- dgeo |> filter(id %in% filter)
+    dgeo <- dgeo |> dplyr::filter(id %in% filter)
   }
 
   list(
