@@ -17,7 +17,7 @@ test_that("multiplication works", {
                 na_label = "NA")
 
 
-  df <- read_csv("tmp/boyaca-especies.csv")
+  # df <- read_csv("tmp/boyaca-especies.csv")
 
   map_name <- "col_municipalities_boyaca"
   var <- "value"
