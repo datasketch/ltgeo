@@ -17,7 +17,7 @@ test_that("multiplication works", {
                 na_label = "NA")
 
 
-  df <- read_csv("tmp/boyaca-especies.csv")
+  # df <- read_csv("tmp/boyaca-especies.csv")
 
   map_name <- "col_municipalities_boyaca"
   var <- "value"
@@ -35,6 +35,7 @@ test_that("multiplication works", {
   )
 
   data <- df
+  map_name <- "col_municipalities"
   lt <- lt_choropleth(df, map_name = map_name, var = var, opts = opts)
   lt
 
