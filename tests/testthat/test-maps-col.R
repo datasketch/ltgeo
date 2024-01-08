@@ -35,6 +35,7 @@ test_that("multiplication works", {
   )
 
   data <- df
+  map_name <- "col_municipalities"
   lt <- lt_choropleth(df, map_name = map_name, var = var, opts = opts)
   lt
 
