@@ -114,7 +114,4 @@ lt_choropleth_GcdNum <-  function(data, ...) {
 }
 
 
-#' @export
-lt_choropleth_GcdCat <- function(data, ...) {
 
-}
