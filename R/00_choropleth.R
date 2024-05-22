@@ -112,3 +112,9 @@ lt_choropleth_GcdNum <-  function(data, ...) {
 
   lt_choropleth(data = data, var_gcd = var_gcd, var_num = var_num_name, ...)
 }
+
+
+#' @export
+lt_choropleth_GcdCat <- function(data, ...) {
+
+}
