@@ -1,12 +1,21 @@
+extract_elements <- function(text) {
+  before <- stringr::str_extract(text, "^[^0-9]+")
+  if (is.na(before)) before <- NULL
+  after <- stringr::str_extract(text, "[^0-9]+$")
+  if (is.na(after)) after <- NULL
+  number <- stringr::str_extract(text, "[0-9,.]+")
+  if (is.na(number)) number <- NULL
+  list(before = before, after = after, number = number)
+}
 
-lflt_legend_format <- function(opts,
-                               transform = identity) {
+lt_legend_format <- function(opts,
+                             transform = identity) {
 
-  prefix <- opts$prefix
-  suffix = opts$suffix
-  between = opts$between
-  sample = opts$sample
-  locale = opts$locale
+  number_format <- extract_elements(opts$format_sample_num)
+  prefix <- number_format$before
+  suffix <- number_format$after
+  between <- " - "
+  sample <- number_format$number
 
   formatNum <- function(x) {
     makeup::makeup_num(transform(x), sample)#, locale = locale)
@@ -81,12 +90,12 @@ lt_legend <- function(map, opts) {
       map = map,
       position = opts$legend_position,
       pal = opts$pal,
-      values = ~..domain,
+      values = ~value,
       na.label = opts$na_label,
       bins = opts$legend_bins,
       opacity = opts$legend_opacity,
       labels = opts$legend_labels,
-      labFormat = lflt_legend_format(opts = opts$legend_format),
+      labFormat = lt_legend_format(opts = opts$legend_format),
       title = opts$legend_title,
       layerId = opts$legend_id,
       group = opts$legend_group
@@ -100,5 +109,3 @@ lt_legend <- function(map, opts) {
     do.call(eval(parse(text="leaflet::addLegend")), opts_legend)
   }
 }
-
-

@@ -1,53 +1,55 @@
-test_that("Choropleth function", {
+test_that("choropleth", {
 
-  lt_choropleth(data = NULL,
-                map_color = "#ccc",
-                border_color = "#ccc")
 
-  data <- data.frame(depto = c("Caquetá", "Amazonas", "Vichada",
-                               "Meta", "Guainía"),
-                     value = runif(5, 1, 100))
-  lt_choropleth(data = data,
-                var_gnm = "depto",
-                var_num = "value",
+# mapa cuando no hay datos ------------------------------------------------
+
+  lt_choropleth( map_name = "world_countries_argentina")
+
+  # Cambiar fondo
+  lt_choropleth( map_name = "world_countries_kazakhstan",
+                 map_provider_tile = NULL)
+  # Borde y color de fondo
+  lt_choropleth(map_name = "world_countries_kazakhstan",
+                map_provider_tile = NULL,
+                border_width = 1,
+                border_opacity = 1,
+                border_color = "#000000",
+                color_palette_sequential = "transparent")
+
+
+# mapa con datos ----------------------------------------------------------
+
+  data <- data.frame(
+    name = c("BOGOTA, D.C.", "CAUCA", "ANTIOQUIA", "MAGDALENA", "MAGDALENA"),
+    population = c(8000000, 1500000, 6500000, 1300000, 32423)
+  )
+
+  lt_choropleth(data,
+                map_name = "col_departments",
+                var_geo = "name", var_num = "population")
+
+  # Si no ingresa variables a graficar busca la primer "categoria" y hace conteo
+  lt_choropleth(data,
                 map_name = "col_departments")
 
 
-  lt_choropleth_GnmNum(data,  map_name = "col_departments")
-  lt_choropleth_Gnm(data,  map_name = "col_departments")
+  lt_choropleth(data,
+                map_name = "col_departments",
+                map_provider_tile = NULL)
+
+  # Titulos y capas adicionales
+  lt_choropleth(data,
+                map_name = "col_departments",
+                var_geo = "name", var_num = "population", agg = "mean",
+                title = "esto es un titulo", title_align = "right",
+                map_name_layers = c("col_departments_pacifico", "col_departments_andina"))
 
 
-  data <- data.frame(mcpio = c("Dagua", "El Encanto", "La Chorrera", "Abejorral"),
-                     valor = runif(4, 100, 500))
-
-  lt_choropleth_GnmNum(data,  map_name = "col_municipalities", title="hola")
-
-
-
-  # Data with codes 9 instead of "09".
-  data <- tibble::tribble(
-    ~id, ~departamento, ~cantidad, ~categoria,
-    "16", "Alta Verapaz", 2,"mayor",
-    "15", "Baja Verapaz", 4,"menor",
-    "04", "Chimaltenango", 5,"mayor",
-    "09", "Quetzaltenango", 6,"menor"
-  )
-
-  gd_match(data, map_name = "gtm_departments")
-  gd_match_codes(data, map_name = "gtm_departments", col = "id")
-  lt_choropleth(data, map_name = "gtm_departments",
-                var_gnm = "departamento",
-                var_num = "cantidad",
-                map_tiles = "CartoDB.VoyagerOnlyLabels")
-
-  data <- data[,-2]
-  lt_choropleth(data, map_name = "gtm_departments",
-                var_gcd = "id",
-                var_num = "cantidad",
-                map_tiles = "CartoDB.VoyagerOnlyLabels")
-
-  data <- data |> select(id, cantidad, everything())
-  lt_choropleth_GcdNum(data, map_name = "gtm_departments")
-  lt_choropleth_Gcd(data, map_name = "gtm_departments")
+  # Formato numerico
+  lt_choropleth(data,
+                map_name = "col_departments",
+                var_geo = "name", var_num = "population",
+                format_sample_num = "1,000.2",
+                map_name_layers = c("col_departments_pacifico", "col_departments_andina"))
 
 })
