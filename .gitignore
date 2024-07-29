@@ -2,3 +2,6 @@
 .Rbuildignore
 .DS_Store
 .Rhistory
+*.log
+*.tmp
+*.swp
