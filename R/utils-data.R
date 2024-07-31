@@ -112,8 +112,11 @@ data_prep_bubbles <- function(data = NULL,
                            dic = dic_d,
                            group_vars = NULL,
                            var_num_to_agg = var_num, ...)
+    var_value <- var_num
+    if (!is.null(var_cat)) var_value <- var_cat
+    dgeo$..domain <- dgeo[[var_num]]
     dgeo <- dgeo |>
-      rename(value = {{var_num}})
+      rename(value = {{var_value}})
   }
 
 

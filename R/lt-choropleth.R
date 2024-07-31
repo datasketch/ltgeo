@@ -20,6 +20,7 @@ lt_choropleth <- function(data = NULL,
     color_type <- opts_colors$color_palette_type
     if (is.null(color_type)) color_type <- "sequential"
     color_palette <- opts_colors[[paste0("color_palette_", color_type)]]
+    if (is.null(data)) color_palette <- "transparent"
   } else {
     color_palette <- data_viz$..colors
   }

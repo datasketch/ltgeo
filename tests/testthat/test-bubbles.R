@@ -1,4 +1,5 @@
 test_that("Bubble map", {
+  lt_bubbles()
   lt_bubbles(map_name = "col_departments")
   data <- data.frame(
     Latitud = runif(30, min = -90, max = 90),
@@ -34,4 +35,16 @@ test_that("Bubble map", {
   lt_bubbles(data = data,  var_gln = "Longitud",
              var_glt = "Latitud", map_bubble_cluster = TRUE,
              map_bubble_cluster_params = list(iconCreateFunction = icon_create_function))
+
+
+  data <- data.frame(
+    lng = c(-99.13, -99.14, -99.15, -99.16),
+    lat = c(19.43, 19.44, 19.45, 19.46),
+    category = c("A", "B", "A", "C")
+  )
+  lt_bubbles(data = data,  var_gln = "lat",
+             var_glt = "lng", var_cat = "category",
+             map_name = "world_countries_mexico")
+
+
 })
