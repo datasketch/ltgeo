@@ -35,7 +35,8 @@ test_that("choropleth", {
 
   lt_choropleth(data,
                 map_name = "col_departments",
-                map_provider_tile = NULL)
+                map_provider_tile = NULL,
+                map_bring_front = TRUE)
 
   # Titulos y capas adicionales
   lt_choropleth(data,

@@ -35,9 +35,9 @@ lt_choropleth <- function(data = NULL,
   highlight_opts <- dsopts_merge(..., categories = "highlight")
   theme_opts <- dsopts_merge(..., categories = "theme")
   title_opts <- dsopts_merge(..., categories = "titles")
-  lt <- leaflet::leaflet(data_viz) |>
+  lt <- leaflet(data_viz) |>
     lt_tiles(tiles_opts) |>
-    leaflet::addPolygons(
+    addPolygons(
       fillColor = ~pal(value),
       weight = general_opts$border_width,
       opacity = general_opts$border_opacity,
@@ -47,7 +47,7 @@ lt_choropleth <- function(data = NULL,
         weight = highlight_opts$highlight_border_weight,
         color = highlight_opts$highlight_border_color,
         fillOpacity = highlight_opts$highlight_opacity,
-        bringToFront = TRUE #agregar opcion en dsopts
+        bringToFront = general_opts$map_bring_front
       ),
       label = ~..labels,
       labelOptions = labelOptions(
