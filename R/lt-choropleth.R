@@ -65,14 +65,14 @@ lt_choropleth <- function(data = NULL,
   lt <- lt |>
     lt_titles(title_opts)
 
-  # if (!is.null(data)) {
-  #  lt <- lt |> leaflet::addLegend(
-  #     pal = pal,
-  #     values = data_viz$value,
-  #     title = title_opts$title_legend,
-  #     position = "bottomright"
-  #   )
-  # }
+  if (!is.null(data)) {
+   lt <- lt |> leaflet::addLegend(
+      pal = pal,
+      values = data_viz$value,
+      title = title_opts$title_legend,
+      position = "bottomright"
+    )
+  }
 
   lt
 
