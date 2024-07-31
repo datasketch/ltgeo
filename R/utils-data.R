@@ -52,22 +52,26 @@ data_prep <- function(data = NULL,
 data_prep_bubbles <- function(data = NULL,
                               dic = NULL,
                               var_cat = NULL,
+                              var_geo = NULL,
                               var_gln = NULL,
                               var_glt = NULL,
                               var_num = NULL,
                               conmap = NULL,
                               map_name = NULL, ...) {
   dgeo <- NULL
-  no_conmap <- is.null(conmap)
-  conmap <- geotable::gt_con(conmap)
+  if (!is.null(var_geo)) {
+    no_conmap <- is.null(conmap)
+    conmap <- geotable::gt_con(conmap)
 
-  sf <- geotable::gt_sf(map_name, con = conmap) |>
-    geotable::rename_dotdot()
-
-  if (is.null(data)) {
-    dgeo <- sf |> mutate(..labels = ..gt_name)
-    dgeo$lon <- 0
-    dgeo$lon <- lat
+    sf <- geotable::gt_sf(map_name, con = conmap) |>
+      geotable::rename_dotdot()
+    dgeo <- data_prep(data, dic,
+                      var_geo = var_geo, var_num = var_num,
+                      conmap = conmap, map_name = map_name, ...)
+    dgeo$centroides <- st_centroid(dgeo$geom)
+    coords <- st_coordinates(dgeo$centroides)
+    dgeo$lon <- coords[,"X"]
+    dgeo$lat <- coords[,"Y"]
   } else {
     data <- data |> rename("lat" = {{var_gln}}, "lon" = {{var_glt}})
     opts <- dsopts_merge(..., categories = "dataprep")
@@ -81,8 +85,8 @@ data_prep_bubbles <- function(data = NULL,
       group_vars = c(var_cat, "lat", "lon"),
       var_num_to_agg = var_num,
       agg = agg_num, agg_na_rm = TRUE,
-      tooltip_add_unique_cats = opts$tooltip_add_unique_cats
     )
+
 
     if (!is.null(dic)) {
       dic$id[dic$id == var_gln] <- "lat"
@@ -95,7 +99,7 @@ data_prep_bubbles <- function(data = NULL,
       }
     }
 
-
+    var_num <- var_num %||% "conteo"
     ht <- hdtable(data_viz)
     data <- ht$data
     dic_d <- dic %||% ht$dic
@@ -108,12 +112,12 @@ data_prep_bubbles <- function(data = NULL,
                            dic = dic_d,
                            group_vars = NULL,
                            var_num_to_agg = var_num, ...)
+    dgeo <- dgeo |>
+      rename(value = {{var_num}})
   }
 
-  list(
-    data_polygon = sf,
-    data_geo = dgeo
-  )
+
+  dgeo
 }
 
 
@@ -133,6 +137,5 @@ default_var_group <- function(dic = NULL) {
 default_var_coor <- function(dic = NULL) {
   dic <- dic |> filter(hdtype %in% "Num")
   if (nrow(dic) == 0) return()
-  list(glt = dic$id[1],
-       gln = dic$id[2])
+
 }
