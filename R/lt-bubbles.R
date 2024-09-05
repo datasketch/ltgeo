@@ -1,3 +1,4 @@
+#' @export
 lt_bubbles <- function(data = NULL,
                        dic = NULL,
                        var_gln = NULL,

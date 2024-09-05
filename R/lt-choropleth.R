@@ -1,3 +1,4 @@
+#' @export
 lt_choropleth <- function(data = NULL,
                           dic = NULL,
                           var_geo = NULL,
