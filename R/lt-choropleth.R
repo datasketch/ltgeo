@@ -15,7 +15,9 @@ lt_choropleth <- function(data = NULL,
 
   opts_data <- dsopts_merge(..., categories = "dataprep")
   data_viz <- data_prep(data_viz, dic_viz, var_geo, var_num,
-                        map_name = opts_data$map_name, opts = opts_data)
+                        map_name = opts_data$map_name,
+                        map_file = opts_data$map_file,
+                        opts = opts_data)
   opts_colors <- dsopts_merge(..., categories = "colorprep")
   if (!"..colors" %in% names(data_viz)) {
     color_type <- opts_colors$color_palette_type

@@ -9,9 +9,13 @@ data_prep <- function(data = NULL,
   dgeo <- NULL
   no_conmap <- is.null(conmap)
   conmap <- geotable::gt_con(conmap)
-
+  if (is.null(map_name)) {
+   sf <- sf::read_sf(map_file) |> select(id, name, geom) |>
+     geotable::rename_dotdot()
+  } else {
   sf <- geotable::gt_sf(map_name, con = conmap) |>
     geotable::rename_dotdot()
+  }
 
   if (is.null(data)) {
     dgeo <- sf |> mutate(..labels = ..gt_name)
@@ -29,20 +33,25 @@ data_prep <- function(data = NULL,
     data[[var_geo]] <- toupper(data[[var_geo]])
     data <- data |>
       rename(name = {{var_geo}}, value = {{var_num}}) |>
-      filter(!is.na(value))
+      filter(!is.na(value), !is.na(name))
+    if (is.null(map_name)) {
+      sf$name <- toupper(sf$..gt_name)
+      dgeo <- sf |> left_join(data)
+    } else {
     dmatch <- geotable::gt_match(data,
                                  map_name,
                                  unique = TRUE,
                                  con = conmap) |>
       select(name, value, "..gt_id", ..labels)
     dgeo <- sf |> left_join(dmatch, by = "..gt_id")
+    }
   }
 
 
   if(no_conmap){
     geotable::gt_discon(conmap)
   }
-
+  print(dgeo)
   dgeo
 
 
