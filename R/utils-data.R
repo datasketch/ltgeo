@@ -3,7 +3,8 @@ data_prep <- function(data = NULL,
                       var_geo = NULL,
                       var_num = NULL,
                       conmap = NULL,
-                      map_name = NULL, ...) {
+                      map_name = NULL,
+                      map_file = NULL, ...) {
 
 
   dgeo <- NULL
