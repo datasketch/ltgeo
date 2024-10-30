@@ -16,6 +16,9 @@ data_prep <- function(data = NULL,
   if (is.null(map_name)) {
     path <- system.file("map_esp", map_file, package = "ltgeo")
     sf <- read_sf(path)
+    if ("comarca" %in% names(sf)) {
+      sf <- sf |> rename(name = comarca)
+    }
   } else {
     sf <- geotable::gt_sf(map_name, con = conmap)
   }
