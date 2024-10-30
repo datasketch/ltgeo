@@ -11,8 +11,11 @@ data_prep <- function(data = NULL,
   no_conmap <- is.null(conmap)
   conmap <- geotable::gt_con(conmap)
   if (is.null(map_name)) {
+
+    print("in map file")
    sf <- sf::read_sf(map_file) |> select(id, name, geom) |>
      geotable::rename_dotdot()
+   print(sf)
   } else {
   sf <- geotable::gt_sf(map_name, con = conmap) |>
     geotable::rename_dotdot()
