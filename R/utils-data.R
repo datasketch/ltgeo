@@ -10,6 +10,9 @@ data_prep <- function(data = NULL,
   dgeo <- NULL
   no_conmap <- is.null(conmap)
   conmap <- geotable::gt_con(conmap)
+
+  if (!is.null(map_file)) map_name <- NULL
+
   if (is.null(map_name)) {
     path <- system.file("map_esp", map_file, package = "ltgeo")
     sf <- read_sf(path)
