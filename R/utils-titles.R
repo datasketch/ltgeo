@@ -24,7 +24,7 @@ make_heading <- function(heading, opts) {
   font_weight <- opts[[paste0(heading, "_weight")]]
 
   glue::glue(
-    "<div style = 'font-family: {font_family}; font-size: {font_size}px; font-weight: {font_weight}; color: {color};>",
+    "<div style = 'font-family: {font_family}; font-size: {font_size}px; font-weight: {font_weight}; color: {color};'>",
     "{opts[[heading]]}",
     "</div>"
   )
