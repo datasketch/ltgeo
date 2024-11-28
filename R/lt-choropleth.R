@@ -38,7 +38,10 @@ lt_choropleth <- function(data = NULL,
   tiles_opts <- dsopts_merge(..., categories = "maptiles")
   highlight_opts <- dsopts_merge(..., categories = "highlight")
   theme_opts <- dsopts_merge(..., categories = "theme")
-  title_opts <- dsopts_merge(..., categories = "titles")
+  title_opts <- c(
+    dsopts_merge(..., categories = "text"),
+    dsopts_merge(..., categories = "titles")
+  )
   lt <- leaflet(data_viz) |>
     lt_tiles(tiles_opts) |>
     addPolygons(
