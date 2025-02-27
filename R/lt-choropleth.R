@@ -2,11 +2,12 @@
 lt_choropleth <- function(data = NULL,
                           dic = NULL,
                           var_geo = NULL,
+                          var_cat = NULL,
                           var_num = NULL,
                           ...) {
-
   data_viz <- NULL
   dic_viz <- NULL
+
   if (!is.null(data)) {
     ht <- hdtable(data, dic)
     dic_viz <- ht$dic
@@ -14,21 +15,33 @@ lt_choropleth <- function(data = NULL,
   }
 
   opts_data <- dsopts_merge(..., categories = "dataprep")
-  data_viz <- data_prep(data_viz, dic_viz, var_geo, var_num,
-                        map_name = opts_data$map_name,
-                        map_file = opts_data$map_file,
-                        opts = opts_data)
+
+  data_viz <- data_prep(
+    data_viz, dic_viz,
+    var_geo, var_cat, var_num,
+    map_name = opts_data$map_name,
+    map_file = opts_data$map_file,
+    opts = opts_data
+  )
+
   opts_colors <- dsopts_merge(..., categories = "colorprep")
+
   if (!"..colors" %in% names(data_viz)) {
     color_type <- opts_colors$color_palette_type
     if (is.null(color_type)) color_type <- "sequential"
     color_palette <- opts_colors[[paste0("color_palette_", color_type)]]
     if (is.null(data)) color_palette <- "transparent"
+
+    color_func <- ifelse(
+      color_type == "categorical",
+      leaflet::colorFactor,
+      leaflet::colorNumeric
+    )
   } else {
     color_palette <- data_viz$..colors
   }
 
-  pal <- leaflet::colorNumeric(
+  pal <- color_func(
     palette = color_palette,
     domain = data_viz$value,
     na.color = opts_colors$na_color
@@ -42,10 +55,11 @@ lt_choropleth <- function(data = NULL,
     dsopts_merge(..., categories = "text"),
     dsopts_merge(..., categories = "titles")
   )
+
   lt <- leaflet(data_viz) |>
     lt_tiles(tiles_opts) |>
     addPolygons(
-      fillColor = ~pal(value),
+      fillColor = ~ pal(value),
       weight = general_opts$border_width,
       opacity = general_opts$border_opacity,
       color = general_opts$border_color %||% "#FFFFFF",
@@ -68,12 +82,11 @@ lt_choropleth <- function(data = NULL,
   lt <- lt |>
     lt_add_layers(general_opts$map_name_layers)
 
-
   lt <- lt |>
     lt_titles(title_opts)
 
   if (!is.null(data)) {
-   lt <- lt |> leaflet::addLegend(
+    lt <- lt |> leaflet::addLegend(
       pal = pal,
       values = data_viz$value,
       title = title_opts$title_legend,
@@ -82,6 +95,40 @@ lt_choropleth <- function(data = NULL,
   }
 
   lt
-
-
 }
+
+#' @export
+lt_choropleth_Geo <- function(data, dic = NULL, ...) {
+  vars <- data_vars(data)
+  lt_choropleth(data, dic, var_geo = vars[1], ...)
+}
+
+#' @export
+lt_choropleth_GeoNum <- function(data, dic = NULL, ...) {
+  vars <- data_vars(data)
+  lt_choropleth(data, dic, var_geo = vars[1], var_num = vars[2], ...)
+}
+
+#' @export
+lt_choropleth_GeoCat <- function(data, dic = NULL, ...) {
+  vars <- data_vars(data)
+  lt_choropleth(
+    data, dic, var_geo = vars[1], var_cat = vars[2],
+    color_palette_type = "categorical",
+    ...
+  )
+}
+
+#' @export
+lt_choropleth_Gnm <- lt_choropleth_Geo
+#' @export
+lt_choropleth_GnmNum <- lt_choropleth_GeoNum
+#' @export
+lt_choropleth_GnmCat <- lt_choropleth_GeoCat
+
+#' @export
+lt_choropleth_Gcd <- lt_choropleth_Geo
+#' @export
+lt_choropleth_GcdNum <- lt_choropleth_GeoNum
+#' @export
+lt_choropleth_GcdCat <- lt_choropleth_GeoCat

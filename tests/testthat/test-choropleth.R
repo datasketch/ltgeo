@@ -54,3 +54,41 @@ test_that("choropleth", {
                 map_name_layers = c("col_departments_pacifico", "col_departments_andina"))
 
 })
+
+test_that("lt_choropleth_Geo", {
+  data <- data.frame(
+    name = c(
+      rep("BOGOTA, D.C.", 5),
+      rep("CAUCA", 3),
+      rep("ANTIOQUIA", 2),
+      rep("MAGDALENA", 1)
+    )
+  )
+
+  lt_choropleth_Geo(data, map_name = "col_departments")
+})
+
+test_that("lt_choropleth_GeoNum", {
+  data <- data.frame(
+    name = c("BOGOTA, D.C.", "CAUCA", "ANTIOQUIA", "MAGDALENA", "MAGDALENA"),
+    population = c(8000000, 1500000, 6500000, 1300000, 32423)
+  )
+
+  lt_choropleth_GeoNum(data, map_name = "col_departments")
+  lt_choropleth_GeoNum(data, map_name = "col_departments", agg = "mean")
+})
+
+test_that("lt_choropleth_GeoCat", {
+  data <- data.frame(
+    name = c(
+      "BOGOTA, D.C.", "CAUCA", "ANTIOQUIA", "MAGDALENA",
+      "SANTANDER", "NARIÑO", "VALLE DEL CAUCA", "META"
+    ),
+    category = c(
+      "A", "B", "C", "D",
+      "B", "C", "A", "D"
+    )
+  )
+
+  lt_choropleth_GeoCat(data, map_name = "col_departments")
+})

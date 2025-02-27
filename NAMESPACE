@@ -2,4 +2,13 @@
 
 export(lt_bubbles)
 export(lt_choropleth)
+export(lt_choropleth_Gcd)
+export(lt_choropleth_GcdCat)
+export(lt_choropleth_GcdNum)
+export(lt_choropleth_Geo)
+export(lt_choropleth_GeoCat)
+export(lt_choropleth_GeoNum)
+export(lt_choropleth_Gnm)
+export(lt_choropleth_GnmCat)
+export(lt_choropleth_GnmNum)
 export(lt_legend)

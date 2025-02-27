@@ -1,12 +1,11 @@
 data_prep <- function(data = NULL,
                       dic = NULL,
                       var_geo = NULL,
+                      var_cat = NULL,
                       var_num = NULL,
                       conmap = NULL,
                       map_name = NULL,
                       map_file = NULL, ...) {
-
-
   dgeo <- NULL
   no_conmap <- is.null(conmap)
   conmap <- geotable::gt_con(conmap)
@@ -30,39 +29,48 @@ data_prep <- function(data = NULL,
     dic <- dic %||% hdtable(data)$dic
     var_geo <- var_geo %||% default_var_group(dic)
 
-    data <- aggregate_data(data = data,
-                           dic = dic,
-                           group_vars = var_geo,
-                           var_num_to_agg = var_num, ...)
+    if (!is.null(var_cat)) {
+      data <- aggregate_data(data = data, dic = dic, ...)
+    } else {
+      data <- aggregate_data(
+        data = data,
+        dic = dic,
+        group_vars = var_geo,
+        var_num_to_agg = var_num,
+        ...
+      )
+    }
 
     if (is.null(var_num)) var_num <- "Conteo"
+    var_value <- var_cat %||% var_num
     data[[var_geo]] <- toupper(data[[var_geo]])
+
     data <- data |>
-      rename(name = {{var_geo}}, value = {{var_num}}) |>
+      rename(name = {{ var_geo }}, value = {{ var_value }}) |>
       filter(!is.na(value), !is.na(name))
+
     if (is.null(map_name)) {
       sf$name <- toupper(sf$..gt_name)
       dgeo <- sf |> left_join(data)
     } else {
-      dmatch <- geotable::gt_match(data,
-                                   map_name,
-                                   unique = TRUE,
-                                   con = conmap) |>
+      dmatch <- data |>
+        geotable::gt_match(
+          map_name,
+          unique = TRUE,
+          con = conmap
+        ) |>
         select(name, value, "..gt_id", ..labels)
+
       dgeo <- sf |> left_join(dmatch, by = "..gt_id")
     }
   }
 
-
-  if(no_conmap){
+  if (no_conmap) {
     geotable::gt_discon(conmap)
   }
 
   dgeo
-
-
 }
-
 
 data_prep_bubbles <- function(data = NULL,
                               dic = NULL,
@@ -157,3 +165,5 @@ default_var_coor <- function(dic = NULL) {
   if (nrow(dic) == 0) return()
 
 }
+
+data_vars <- function(data) names(hdtable(data)$data)
