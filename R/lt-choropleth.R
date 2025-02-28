@@ -47,6 +47,7 @@ lt_choropleth <- function(data = NULL,
     na.color = opts_colors$na_color
   )
 
+  zoom_opts <- dsopts_merge(..., categories = "zoom")
   general_opts <- dsopts_merge(..., categories = "map")
   tiles_opts <- dsopts_merge(..., categories = "maptiles")
   highlight_opts <- dsopts_merge(..., categories = "highlight")
@@ -56,7 +57,17 @@ lt_choropleth <- function(data = NULL,
     dsopts_merge(..., categories = "titles")
   )
 
-  lt <- leaflet(data_viz) |>
+  lt <- data_viz |>
+    leaflet(
+      options = leafletOptions(
+        zoomControl = FALSE,
+        zoomSnap = zoom_opts$map_zoom_snap,
+        zoomDelta = zoom_opts$map_zoom_delta,
+        zoom = zoom_opts$zoom_level,
+        minZoom = zoom_opts$zoom_min,
+        maxZoom = zoom_opts$zoom_max
+      )
+    ) |>
     lt_tiles(tiles_opts) |>
     addPolygons(
       fillColor = ~ pal(value),
@@ -84,6 +95,11 @@ lt_choropleth <- function(data = NULL,
 
   lt <- lt |>
     lt_titles(title_opts)
+
+  if (zoom_opts$zoom_show) {
+    lt <- lt |>
+      lt_add_zoom_control(zoom_opts$map_zoom_control_align %||% "topright")
+  }
 
   if (!is.null(data)) {
     lt <- lt |> leaflet::addLegend(

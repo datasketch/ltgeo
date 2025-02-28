@@ -53,6 +53,30 @@ test_that("choropleth", {
                 format_sample_num = "1,000.2",
                 map_name_layers = c("col_departments_pacifico", "col_departments_andina"))
 
+  # Opciones de zoom
+  lt_choropleth(data,
+                map_name = "col_departments",
+                var_geo = "name", var_num = "population",
+                zoom_show = FALSE)
+
+  lt_choropleth(data,
+                map_name = "col_departments",
+                var_geo = "name", var_num = "population",
+                zoom_min = 3, zoom_max = 7)
+
+  lt_choropleth(data,
+                map_name = "col_departments",
+                var_geo = "name", var_num = "population",
+                zoom_min = 3, zoom_max = 7,
+                map_zoom_delta = 2)
+
+  lt_choropleth(data,
+                map_name = "col_departments",
+                var_geo = "name", var_num = "population",
+                zoom_min = 3, zoom_max = 7,
+                map_zoom_delta = 0.5,
+                map_zoom_snap = 0.5)
+
 })
 
 test_that("lt_choropleth_Geo", {
