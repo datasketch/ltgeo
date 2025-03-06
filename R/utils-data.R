@@ -57,7 +57,8 @@ data_prep <- function(data = NULL,
         geotable::gt_match(
           map_name,
           unique = TRUE,
-          con = conmap
+          con = conmap,
+          strict_threshold = FALSE
         ) |>
         select(name, value, "..gt_id", ..labels)
 
