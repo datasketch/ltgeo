@@ -24,28 +24,38 @@ lt_choropleth <- function(data = NULL,
     opts = opts_data
   )
 
-  opts_colors <- dsopts_merge(..., categories = "colorprep")
+  opts_colors <- c(
+    dsopts_merge(..., categories = "legend"),
+    dsopts_merge(..., categories = "colorprep")
+  )
 
   if (!"..colors" %in% names(data_viz)) {
     color_type <- opts_colors$color_palette_type
     if (is.null(color_type)) color_type <- "sequential"
+
     color_palette <- opts_colors[[paste0("color_palette_", color_type)]]
     if (is.null(data)) color_palette <- "transparent"
 
-    color_func <- ifelse(
-      color_type == "categorical",
-      leaflet::colorFactor,
-      leaflet::colorNumeric
+    color_func <- dplyr::case_when(
+      is.null(var_cat) & color_type == "categorical" ~ "colorBin",
+      !is.null(var_cat) & color_type == "categorical" ~ "colorFactor",
+      .default = "colorNumeric"
     )
   } else {
     color_palette <- data_viz$..colors
   }
 
-  pal <- color_func(
+  color_func_opts <- list(
     palette = color_palette,
     domain = data_viz$value,
     na.color = opts_colors$na_color
   )
+
+  if (color_func == "colorBin") {
+    color_func_opts$bins <- opts_colors$color_bins_n
+  }
+
+  pal <- do.call(color_func, color_func_opts)
 
   zoom_opts <- dsopts_merge(..., categories = "zoom")
   general_opts <- dsopts_merge(..., categories = "map")
@@ -60,6 +70,7 @@ lt_choropleth <- function(data = NULL,
   lt <- data_viz |>
     leaflet(
       options = leafletOptions(
+        attributionControl = general_opts$attribution_control,
         zoomControl = FALSE,
         zoomSnap = zoom_opts$map_zoom_snap,
         zoomDelta = zoom_opts$map_zoom_delta,

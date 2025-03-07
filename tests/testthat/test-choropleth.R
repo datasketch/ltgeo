@@ -90,6 +90,12 @@ test_that("lt_choropleth_Geo", {
   )
 
   lt_choropleth_Geo(data, map_name = "col_departments")
+
+  # Color by intervals
+  lt_choropleth_Geo(
+    data, map_name = "col_departments",
+    color_palette_type = "categorical"
+  )
 })
 
 test_that("lt_choropleth_GeoNum", {
@@ -100,6 +106,24 @@ test_that("lt_choropleth_GeoNum", {
 
   lt_choropleth_GeoNum(data, map_name = "col_departments")
   lt_choropleth_GeoNum(data, map_name = "col_departments", agg = "mean")
+
+  # Color by intervals
+  lt_choropleth_GeoNum(
+    data, map_name = "col_departments",
+    color_palette_type = "categorical"
+  )
+
+  lt_choropleth_GeoNum(
+    data, map_name = "col_departments",
+    color_palette_type = "categorical",
+    color_bins_n = 2
+  )
+
+  lt_choropleth_GeoNum(
+    data, map_name = "col_departments",
+    color_palette_type = "categorical",
+    color_bins_n = 10
+  )
 })
 
 test_that("lt_choropleth_GeoCat", {
