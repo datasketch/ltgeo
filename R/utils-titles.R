@@ -4,7 +4,7 @@ lt_titles <- function(lt, opts_titles) {
   }
 
   if (opts_titles$subtitle_align == "center") {
-    opts_titles$title_align <- "left"
+    opts_titles$subtitle_align <- "left"
   }
 
   if (opts_titles$caption_align == "center") {
