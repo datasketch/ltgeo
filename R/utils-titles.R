@@ -1,4 +1,16 @@
 lt_titles <- function(lt, opts_titles) {
+  if (opts_titles$title_align == "center") {
+    opts_titles$title_align <- "left"
+  }
+
+  if (opts_titles$subtitle_align == "center") {
+    opts_titles$title_align <- "left"
+  }
+
+  if (opts_titles$caption_align == "center") {
+    opts_titles$title_align <- "right"
+  }
+
   lt |>
     addControl(
       html = make_heading("title", opts_titles),
