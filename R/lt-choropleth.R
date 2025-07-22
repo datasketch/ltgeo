@@ -33,7 +33,12 @@ lt_choropleth <- function(data = NULL,
     color_type <- opts_colors$color_palette_type
     if (is.null(color_type)) color_type <- "sequential"
 
-    color_palette <- opts_colors[[paste0("color_palette_", color_type)]]
+    color_palette <- opts_colors$color_palette
+
+    if (is.null(color_palette)) {
+      color_palette <- opts_colors[[paste0("color_palette_", color_type)]]
+    }
+
     if (is.null(data)) color_palette <- "transparent"
 
     color_func <- dplyr::case_when(
