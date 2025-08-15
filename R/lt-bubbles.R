@@ -104,3 +104,31 @@ lt_bubbles <- function(
 
   lt
 }
+
+#' @export
+lt_bubbles_Geo <- function(data, dic = NULL, ...) {
+  vars <- data_vars(data)
+
+  lt_bubbles(data, dic, var_geo = vars[1], ...)
+}
+
+#' @export
+lt_bubbles_GeoNum <- function(data, dic = NULL, ...) {
+  vars <- data_vars(data)
+
+  lt_bubbles(data, dic, var_geo = vars[1], var_num = vars[2], ...)
+}
+
+#' @export
+lt_bubbles_GeoCat <- function(data, dic = NULL, ...) {
+  vars <- data_vars(data)
+
+  lt_bubbles(
+    data,
+    dic,
+    var_geo = vars[1],
+    var_cat = vars[2],
+    color_palette_type = "categorical",
+    ...
+  )
+}
