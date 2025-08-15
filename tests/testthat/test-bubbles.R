@@ -1,16 +1,21 @@
 test_that("Bubble map", {
   lt_bubbles()
   lt_bubbles(map_name = "col_departments")
+
   data <- data.frame(
     Latitud = runif(30, min = -90, max = 90),
     Longitud = runif(30, min = -180, max = 180)
   )
-  lt_bubbles(data = data,  var_gln = "Longitud",
-             var_glt = "Latitud")
+
+  lt_bubbles(data = data, var_gln = "Longitud", var_glt = "Latitud")
 
   # Añadir agrupación
-  lt_bubbles(data = data,  var_gln = "Longitud",
-             var_glt = "Latitud", map_bubble_cluster = TRUE)
+  lt_bubbles(
+    data = data,
+    var_gln = "Longitud",
+    var_glt = "Latitud",
+    map_bubble_cluster = TRUE
+  )
 
   # Personalizar agrupación
   # aca se puede ajustar:
@@ -23,28 +28,37 @@ test_that("Bubble map", {
   # maxClusterRadius: Define el radio máximo en píxeles de un grupo de marcadores. Los marcadores que están más lejos no se agruparán
   # spiderLegPolylineOptions: markerClusterOptions(spiderLegPolylineOptions = list(weight = 1.5, color = "#FF0000"))
   # iconCreateFunction: Una función JavaScript que permite personalizar la apariencia del ícono del grupo de marcadores.
-  icon_create_function <- JS("
-  function(cluster) {
-    return L.divIcon({
-      html: '<div style=\"display: flex; justify-content: center; align-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 0, 0, 0.5);\"><span>' + cluster.getChildCount() + '</span></div>',
-      className: 'marker-cluster',
-      iconSize: L.point(40, 40)
-    });
-  }
-")
-  lt_bubbles(data = data,  var_gln = "Longitud",
-             var_glt = "Latitud", map_bubble_cluster = TRUE,
-             map_bubble_cluster_params = list(iconCreateFunction = icon_create_function))
+  icon_create_function <- JS(
+    "
+      function(cluster) {
+        return L.divIcon({
+          html: '<div style=\"display: flex; justify-content: center; align-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 0, 0, 0.5);\"><span>' + cluster.getChildCount() + '</span></div>',
+          className: 'marker-cluster',
+          iconSize: L.point(40, 40)
+        });
+      }
+    "
+  )
 
+  lt_bubbles(
+    data = data,
+    var_gln = "Longitud",
+    var_glt = "Latitud",
+    map_bubble_cluster = TRUE,
+    map_bubble_cluster_params = list(iconCreateFunction = icon_create_function)
+  )
 
   data <- data.frame(
     lng = c(-99.13, -99.14, -99.15, -99.16),
     lat = c(19.43, 19.44, 19.45, 19.46),
     category = c("A", "B", "A", "C")
   )
-  lt_bubbles(data = data,  var_gln = "lat",
-             var_glt = "lng", var_cat = "category",
-             map_name = "world_countries_mexico")
 
-
+  lt_bubbles(
+    data = data,
+    var_gln = "lat",
+    var_glt = "lng",
+    var_cat = "category",
+    map_name = "world_countries_mexico"
+  )
 })
