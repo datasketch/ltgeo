@@ -18,3 +18,9 @@ Depends:
     dsopts,
     dsdatawiz,
     R (>= 3.0.0)
+Remotes:
+    datasketch/geotable,
+    datasketch/dsopts,
+    datasketch/dsdatawiz
+
+    
